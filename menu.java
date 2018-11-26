@@ -1,7 +1,7 @@
 import java.util.*;
 import javax.swing.*;
 
-JFrame frame = new JFrame("Domi'Nations");
+JFrame frame = new JFrame("Domi'Nations Version SMP");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(yellowLabel, BorderLayout.CENTER);
         frame.pack();
