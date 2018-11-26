@@ -8,4 +8,4 @@ play : lance une partie
 
 settings : ouvre une fenêtre de paramètres
 
-qui : ouvre une y/n fenêtre, quitte si oui, retour au menu sinon
+quit : ouvre une y/n fenêtre, quitte si oui, retour au menu sinon
