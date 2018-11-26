@@ -1,0 +1,33 @@
+import java.util.*;
+
+public class TirageRoi {
+
+	public static ArrayList<String> listeRoi = new ArrayList<>(Arrays.asList("RoiVert","RoiBleu","RoiJaune","RoiRose"));
+	public static ArrayList<Integer> listeDomino = new ArrayList<>(Arrays.asList(1,2,3,4));
+	public static final void tirage() {
+		Collections.shuffle(listeRoi);
+		int k=listeDomino.size();
+		for(int i=0;i<listeRoi.size();i++) {
+			System.out.println(listeRoi.get(i));
+			while(listeDomino.size() ==k) {
+				System.out.println("Quel domino choisissez-vous (1,2,3 ou 4)?");
+				Scanner scanner=new Scanner(System.in);
+				while(!scanner.hasNextInt()) {
+					scanner.nextLine();
+					System.out.println("erreur le domino n'existe pas. Veuillez en choisir un autre");
+					System.out.println("Quel domino choisissez-vous (1,2,3 ou 4)?");
+				}
+				int n=scanner.nextInt();
+				if(listeDomino.contains(n)) {
+					listeDomino.remove(listeDomino.indexOf(n));
+					System.out.println(n);
+				}
+				else {
+					System.out.println("erreur le domino n'existe pas. Veuillez en choisir un autre");
+				}
+			}
+			k=k-1;
+			
+		}
+	}
+}
