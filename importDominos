@@ -16,7 +16,7 @@ public class importDominos {
 		BufferedReader reader = null;
 
 		try {
-		    File file = new File("dominos.txt");
+		   File file = new File("/home/eleves/f/fabienmaury/Bureau/dominos.csv");
 		    reader = new BufferedReader(new FileReader(file));
 
 		    String line;
