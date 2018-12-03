@@ -1,0 +1,80 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		ArrayList<Integer> listeDomino1 = new ArrayList<>();
+		ArrayList<ArrayList> listeTest1 = new ArrayList<>();
+		ArrayList<String> listeRoi = new ArrayList<>(Arrays.asList("RoiVert","RoiBleu","RoiJaune","RoiRose"));
+		Collections.shuffle(listeRoi);
+		for(int i=1;i<=48;i++) {
+			listeDomino1.add(i);
+		}
+		System.out.println(listeDomino1);
+		int n=0;
+		
+		
+		while(listeDomino1.size()!=0) {
+			ArrayList<Integer> listeTest = new ArrayList<>();
+			ArrayList<String> listeRoi1 = new ArrayList<>(Arrays.asList("0","0","0","0"));
+			int h=0;
+			
+			for(int k=0;k<4;k++) {
+				int j=(int)(Math.random()*(47-n));	
+				listeTest.add(listeDomino1.get(j));
+				
+				listeDomino1.remove(listeDomino1.get(j));
+				n=n+1;
+				
+				
+			}
+			Collections.sort(listeTest);
+			ArrayList<Integer> listeTest2 =new ArrayList<>();
+			listeTest2.addAll(listeTest);
+			listeTest1.add(listeTest);
+			while(listeTest.size()!=0) {
+				
+				System.out.println(listeRoi.get(h));
+				String chaine="";
+				for(int i=0;i<listeTest.size();i++) {
+					String x=String.valueOf(listeTest.get(i));
+					chaine=chaine+" "+x+" ";
+				}
+				System.out.println("Quel domino choisissez-vous ? ("+chaine+")");
+				Scanner scanner=new Scanner(System.in);
+				while(!scanner.hasNextInt()) {
+					scanner.nextLine();
+					System.out.println("erreur le domino n'existe pas. Veuillez en choisir un autre");
+					System.out.println("Quel domino choisissez-vous ? ("+chaine+")");
+				}
+				int m=scanner.nextInt();
+				if(listeTest.contains(m)) {
+					int v=listeTest2.indexOf(m);
+					listeTest.remove(listeTest.indexOf(m));
+					System.out.println(m);
+					listeRoi1.set(v,listeRoi.get(h));
+					h=h+1;
+					
+				}
+				else {
+					System.out.println("Vous ne pouvez pas choisir ce domino. Veuillez en choisir un autre");
+				}
+				System.out.println(listeRoi1);
+				System.out.println(listeTest2);
+				
+			}
+			listeRoi=listeRoi1;
+			System.out.println(listeRoi);
+			
+			
+			
+		}
+		
+		
+	}
+
+}
