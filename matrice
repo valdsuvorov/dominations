@@ -1,0 +1,92 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Matrice {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int[][] matrice=new int[9][9];
+		ArrayList<Integer> liste = new ArrayList<>();
+		ArrayList<Integer> liste1 = new ArrayList<>();
+		matrice[4][4]=-1;
+		for(int k=0;k<matrice.length;k++) {
+			for(int j=0;j<matrice[0].length;j++) {
+				if(matrice[k][j]!=0) {
+					liste.add(k);
+					liste1.add(j);
+				}
+			}
+		}
+		
+		boolean flag=true;
+		while(flag) {
+			Scanner scanner=new Scanner(System.in);
+			System.out.println("Vertical ou horizontal ?");
+			String n=scanner.nextLine();
+			ArrayList<Integer> listeDemande = new ArrayList<>();
+			ArrayList<Integer> listeDemande1 = new ArrayList<>();
+			if(n.equals("v")) {
+				listeDemande.add(liste.get(0)+1);
+				listeDemande.add(liste.get(0)-1);
+				listeDemande1.add(liste.get(0)+1);
+				listeDemande1.add(liste.get(0)-1);
+			}
+			else {
+				listeDemande.add(liste.get(0)+1);
+				listeDemande.add(liste.get(0)-1);
+				listeDemande1.add(liste.get(0)+1);
+				listeDemande1.add(liste.get(0)-1);
+			}
+			System.out.println("Quel ligne ?"+listeDemande+liste);
+			int l=scanner.nextInt();
+			if(listeDemande.contains(l)) {
+				System.out.println("Quel colonne ?"+listeDemande1+liste1);
+				int m=scanner.nextInt();
+				if (n.equals("v") && l<8 && (liste1.contains(m) || listeDemande1.contains(m))){
+					matrice[l][m]=2;
+					matrice[l+1][m]=2;
+					flag=false;
+				}
+				else if (n.equals("h") && m<8 && (liste1.contains(m) || listeDemande1.contains(m))){
+					matrice[l][m]=2;
+					matrice[l][m+1]=2;
+					flag=false;
+				}
+				else {
+					System.out.println("Erreur");
+				}
+			}
+			else if(liste.contains(l)) {
+				System.out.println("Quel colonne ?"+listeDemande1);
+				int m=scanner.nextInt();
+				if (n.equals("v") && l<8 && listeDemande1.contains(m)){
+					matrice[l][m]=2;
+					matrice[l+1][m]=2;
+					flag=false;
+				}
+				if (n.equals("h") && m<8 && listeDemande1.contains(m)){
+					matrice[l][m]=2;
+					matrice[l][m+1]=2;
+					flag=false;
+				}
+				else {
+					System.out.println("Erreur");
+				}
+			}
+			
+			else {
+				System.out.println("Erreur");
+			}
+			
+			for(int k=0;k<matrice.length;k++) {
+				for(int j=0;j<matrice[0].length;j++) {
+					System.out.print(matrice[k][j]+" ");
+				}
+				System.out.println(" ");
+			}
+			
+		}
+	}
+
+}
