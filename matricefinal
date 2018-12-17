@@ -1,0 +1,378 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class Matrice {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int[][] matrice=new int[12][12];
+		ArrayList<int[]> liste = new ArrayList<>();
+		ArrayList<Integer> liste1 = new ArrayList<>();
+		ArrayList<ArrayList> listeCasePrise = new ArrayList<>();
+		
+		matrice[5][5]=-1;
+		int t=0;
+		for(int k=0;k<matrice.length;k++) {
+			for(int j=0;j<matrice[0].length;j++) {
+				if(matrice[k][j]!=0) {
+					int[] couple= new int[2];
+					couple[0]=k;
+					couple[1]=j;
+					liste.add(couple);
+					liste1.add(j);
+				}
+			}
+		}
+		for(int i=0;i<liste.size();i++) {
+			ArrayList<Integer> listeCouple = new ArrayList<>();
+			listeCouple.add(liste.get(i)[0]);
+			listeCouple.add(liste.get(i)[1]);
+			listeCasePrise.add(listeCouple);
+		}
+		
+		System.out.println(listeCasePrise);
+		int o=0;
+		while(o!=2) {
+			ArrayList<ArrayList> listeCoupPossible = new ArrayList<>();
+			System.out.println("verticale ou horizontal ?");
+			Scanner scanner=new Scanner(System.in);
+			String chaine=scanner.nextLine();
+			if(chaine.equals("v")) {
+				for(int u=1;u<10;u++) {
+					for(int m=1;m<10;m++) {
+						ArrayList<Integer> listeCoupPossible1 = new ArrayList<>();
+						if(coupPossible(matrice,u,m,chaine)) {
+							listeCoupPossible1.add(u);
+							listeCoupPossible1.add(m);
+							listeCoupPossible.add(listeCoupPossible1);
+							System.out.println(listeCoupPossible);
+						}
+					}
+				}
+				ArrayList<Integer> listeCouple2 = new ArrayList<>();
+				ArrayList<Integer> listeCouple3 = new ArrayList<>();
+				int n=scanner.nextInt();
+				int m=scanner.nextInt();
+				listeCouple2.add(n);
+				listeCouple2.add(m);
+				listeCouple3.add(n+1);
+				listeCouple3.add(m);
+				System.out.println(listeCouple2);
+				System.out.println(listeCouple3);
+				if( listeCasePrise.contains(listeCouple2) || listeCasePrise.contains(listeCouple3)) {
+					System.out.println("erreur");
+				}
+				else {
+					System.out.println("Coup validé");
+					listeCasePrise.add(listeCouple2);
+					matrice[n][m]=2;
+					matrice[n+1][m]=2;
+				}
+			}
+			if(chaine.equals("h")) {
+				for(int u=1;u<10;u++) {
+					for(int m=1;m<10;m++) {
+						ArrayList<Integer> listeCoupPossible1 = new ArrayList<>();
+						if(coupPossible(matrice,u,m,chaine)) {
+							listeCoupPossible1.add(u);
+							listeCoupPossible1.add(m);
+							listeCoupPossible.add(listeCoupPossible1);
+							System.out.println(listeCoupPossible);
+						}
+					}
+				}
+				ArrayList<Integer> listeCouple2 = new ArrayList<>();
+				ArrayList<Integer> listeCouple3 = new ArrayList<>();
+				int n=scanner.nextInt();
+				int m=scanner.nextInt();
+				listeCouple2.add(n);
+				listeCouple2.add(m);
+				listeCouple3.add(n);
+				listeCouple3.add(m+1);
+				System.out.println(listeCouple2);
+				System.out.println(listeCouple3);
+				if( listeCoupPossible.contains(listeCouple2)) {
+					System.out.println("Coup validé");
+					listeCasePrise.add(listeCouple2);
+					matrice[n][m]=2;
+					matrice[n][m+1]=2;
+				}
+				else {
+					System.out.println("erreur");
+				}
+			}
+			
+			System.out.println(listeCasePrise);
+			for(int k=0;k<matrice.length;k++) {
+				for(int j=0;j<matrice[0].length;j++) {
+					System.out.print(matrice[k][j]+" ");
+				}
+				System.out.println(" ");
+			}
+		}
+		
+		/*int g=0;
+		while(g!=2) {
+		Scanner scanner=new Scanner(System.in);
+		int n=scanner.nextInt();
+		int m=scanner.nextInt();
+		int[] couple1= new int[2];
+		couple1[0]=n;
+		couple1[1]=m;
+		for(int k=0;k<liste.size();k++) {
+			if(liste.get(k)[0]==couple1[0] && liste.get(k)[1]==couple1[1]) {
+				System.out.println("coucou");
+			}
+			else {
+				liste.add(couple1);
+			}
+		}
+		System.out.println(liste);
+		for(int i=0;i<liste.size();i++) {
+			System.out.println(liste.get(i)[0]);
+			System.out.println(liste.get(i)[1]);
+		}
+		}
+		/*System.out.println(liste1);
+		boolean flag=true;
+		while(flag) {
+			Scanner scanner=new Scanner(System.in);
+			System.out.println("Vertical ou horizontal ?");
+			String n=scanner.nextLine();
+			ArrayList<Integer> listeDemande = new ArrayList<>();
+			ArrayList<Integer> listeDemande1 = new ArrayList<>();
+			if(n.equals("v")) {
+				for(int y=0;y<liste.size();y++) {
+					listeDemande.add(liste.get(y)+1);
+					listeDemande.add(liste.get(y)-1);
+				}
+				for(int y=0;y<liste.size();y++) {
+					listeDemande1.add(liste1.get(y)+1);
+					listeDemande1.add(liste1.get(y)-1);
+				}
+				
+				System.out.println("Quel ligne ?"+listeDemande+liste);
+				int l=scanner.nextInt();
+				if(l<=liste.get(0)) {
+					System.out.println("Quel colonne ?"+listeDemande1);
+					int m=scanner.nextInt();
+					if (listeDemande1.contains(m)){
+						matrice[l][m]=2;
+						matrice[l+1][m]=2;
+						flag=false;
+					}
+					else {
+						System.out.println("erreur");
+					}
+				}
+				else {
+					System.out.println("Quel colonne ?"+liste1);
+					int m=scanner.nextInt();
+					if (liste1.contains(m)){
+						matrice[l][m]=2;
+						matrice[l+1][m]=2;
+						flag=false;
+					}
+					else {
+						System.out.println("erreur");
+					}
+				}
+			}
+			if(n.equals("h")) {
+				listeDemande.add(liste.get(0)+1);
+				listeDemande.add(liste.get(0)-1);
+				listeDemande1.add(liste1.get(0)+1);
+				listeDemande1.add(liste1.get(0)-1);
+				System.out.println("Quel colonne ?"+listeDemande1+liste1);
+				int m=scanner.nextInt();
+				if(m<=liste.get(0)) {
+					System.out.println("Quel ligne ?"+listeDemande);
+					int l=scanner.nextInt();
+					if (listeDemande1.contains(l)){
+						matrice[l][m]=2;
+						matrice[l][m+1]=2;
+						flag=false;
+					}
+					else {
+						System.out.println("erreur");
+					}
+				}
+				else {
+					System.out.println("Quel ligne ?"+liste);
+					int l=scanner.nextInt();
+					if (liste1.contains(l)){
+						matrice[l][m]=2;
+						matrice[l][m+1]=2;
+						flag=false;
+					}
+					else {
+						System.out.println("erreur");
+					}
+				}
+			}
+			else {
+				System.out.println("erreur");
+			}
+			
+			/*if(listeDemande.contains(l)) {
+				System.out.println("Quel colonne ?"+listeDemande1+liste1);
+				int m=scanner.nextInt();
+				if (n.equals("v") && l<8 && (liste1.contains(m) || listeDemande1.contains(m))){
+					matrice[l][m]=2;
+					matrice[l+1][m]=2;
+					flag=false;
+				}
+				else if (n.equals("h") && m<8 && (liste1.contains(m) || listeDemande1.contains(m))){
+					matrice[l][m]=2;
+					matrice[l][m+1]=2;
+					flag=false;
+				}
+				else {
+					System.out.println("Erreur");
+				}
+			}
+			else if(liste.contains(l)) {
+				System.out.println("Quel colonne ?"+listeDemande1);
+				int m=scanner.nextInt();
+				if (n.equals("v") && l<8 && listeDemande1.contains(m)){
+					matrice[l][m]=2;
+					matrice[l+1][m]=2;
+					flag=false;
+				}
+				if (n.equals("h") && m<8 && listeDemande1.contains(m)){
+					matrice[l][m]=2;
+					matrice[l][m+1]=2;
+					flag=false;
+				}
+				else {
+					System.out.println("Erreur");
+				}
+			}
+			
+			else {
+				System.out.println("Erreur");
+			}*/
+			
+			
+			
+		}
+	public static boolean coupPossible(int[][]matrice,int u,int m,String v) {
+		if(v.equals("v")) {
+			boolean flag=true;
+			if(matrice[u][m]!=0 || matrice[u+1][m]!=0) {
+				return false;
+			}
+			
+			else if(test(matrice,u,m,flag)){
+				return false;
+			}
+			else {
+				boolean a=toucher(matrice,u,m);
+				boolean b=toucher(matrice,u+1,m);
+				return (a||b);
+			}
+		}
+		else {
+			boolean flag=false;
+			if(matrice[u][m]!=0 || matrice[u][m+1]!=0) {
+				return false;
+			}
+			else if(test(matrice,u,m,flag)){
+				return false;
+			}
+			else {
+				boolean a=toucher(matrice,u,m);
+				boolean b=toucher(matrice,u,m+1);
+				return (a||b);
+			}
+		}
+		
+	}
+	public static boolean toucher(int[][]matrice,int u,int m) {
+		if(matrice[u+1][m]!=0 || matrice[u-1][m]!=0 || matrice[u][m+1]!=0 || matrice[u][m-1]!=0) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
+	public static boolean test(int[][]matrice,int u,int m,boolean flag) {
+		if(flag) {
+			matrice[u][m]=2;
+			matrice[u+1][m]=2;
+			int compteur=0;
+			for(int i=0;i<12;i++) {
+				for(int k=0;k<12;k++) {
+					if(matrice[i][k]!=0) {
+						compteur++;
+						break;
+					}
+				}
+				if(compteur>=6) {
+					matrice[u][m]=0;
+					matrice[u+1][m]=0;
+					return true;
+				
+				}
+			}
+			compteur=0;
+			for(int i=0;i<12;i++) {
+				for(int k=0;k<12;k++) {
+					if(matrice[k][i]!=0) {
+						compteur++;
+						break;
+					}
+				}
+				if(compteur>=6) {
+					matrice[u][m]=0;
+					matrice[u+1][m]=0;
+					return true;
+				
+				}
+			}
+			matrice[u][m]=0;
+			matrice[u+1][m]=0;
+			return false;
+		}
+		else {
+			matrice[u][m]=2;
+			matrice[u][m+1]=2;
+			int compteur=0;
+			for(int i=0;i<12;i++) {
+				for(int k=0;k<12;k++) {
+					if(matrice[k][i]!=0) {
+						compteur++;
+						break;
+					}
+				}
+				if(compteur>=6) {
+					matrice[u][m]=0;
+					matrice[u][m+1]=0;
+					return true;
+				
+				}
+			}
+			compteur=0;
+			for(int i=0;i<12;i++) {
+				for(int k=0;k<12;k++) {
+					if(matrice[i][k]!=0) {
+						compteur++;
+						break;
+					}
+				}
+				if(compteur>=6) {
+					matrice[u][m]=0;
+					matrice[u][m+1]=0;
+					return true;
+				
+				}
+			}
+			matrice[u][m]=0;
+			matrice[u][m+1]=0;
+			return false;
+		}
+	}
+}
+
