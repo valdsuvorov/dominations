@@ -1,12 +1,16 @@
+package domi;
 import java.io.BufferedReader;
+import java.util.HashMap;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.File;
 
-public class importDominos {
+public class txt {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -16,13 +20,20 @@ public class importDominos {
 		BufferedReader reader = null;
 
 		try {
-		   File file = new File("/home/eleves/f/fabienmaury/Bureau/dominos.csv");
+		    File file = new File("/home/eleves/f/fabienmaury/Bureau/dominos.csv");
 		    reader = new BufferedReader(new FileReader(file));
 
 		    String line;
+		    int n=1;
+		    HashMap<Integer, String> list = new HashMap<Integer, String>();
 		    while ((line = reader.readLine()) != null) {
 		        System.out.println(line);
+		        list.put(n,line);
+		        n++;
+		        
+		        
 		    }
+		    System.out.println(Arrays.asList(list));
 
 		} catch (IOException e) {
 		    e.printStackTrace();
