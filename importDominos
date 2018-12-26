@@ -1,4 +1,3 @@
-package domi;
 import java.io.BufferedReader;
 import java.util.HashMap;
 import java.io.InputStreamReader;
@@ -10,8 +9,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.File;
 
-public class txt {
 
+public class importDominos {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -20,11 +19,11 @@ public class txt {
 		BufferedReader reader = null;
 
 		try {
-		    File file = new File("/home/eleves/f/fabienmaury/Bureau/dominos.csv");
+		    File file = new File("/Users/Vladimir/Desktop/Documents/Dominations/dominos.csv"); // A CHANGER SELON L UTILISATEUR!!!!!
 		    reader = new BufferedReader(new FileReader(file));
 
 		    String line;
-		    int n=1;
+		    int n=0;
 		    HashMap<Integer, String> list = new HashMap<Integer, String>();
 		    while ((line = reader.readLine()) != null) {
 		        System.out.println(line);
@@ -33,7 +32,14 @@ public class txt {
 		        
 		        
 		    }
-		    System.out.println(Arrays.asList(list));
+			String valListe = list.get(1);  // ici je teste le dictionnaire list 
+			String[] valListeSep = valListe.split(","); //split() me permet de separer un String selon ce que je veux 
+			System.out.println(valListe);  // j affiche les infos du domino 1 
+			System.out.println(valListeSep[1]);  // ainsi je récupere la deuxieme info du domino 1, c'est a dire champ ( qu on mettra en numeral après )
+		    System.out.println(Arrays.asList(list)); //affiche le dictionnaire list
+		    
+
+
 
 		} catch (IOException e) {
 		    e.printStackTrace();
@@ -46,3 +52,4 @@ public class txt {
 		}
 	}
 }
+
