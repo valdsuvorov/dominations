@@ -1,0 +1,78 @@
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Random;
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		ArrayList<Domino> listeDomino=new ArrayList<>();
+		ArrayList<Domino> listeDominoTirage=new ArrayList<>();
+		Scanner scanner =new Scanner(System.in);
+		int nbrJoueur=0;
+		while(nbrJoueur>4 || nbrJoueur<2) {
+			System.out.println("Nombre de Joueurs ? (2,3,4)");
+			nbrJoueur=scanner.nextInt();
+		}
+		Game game=new Game(nbrJoueur,listeDomino);
+		scanner.nextLine();
+		ArrayList<Joueur> listeJoueur=new ArrayList<>();
+		for(int k=1;k<=nbrJoueur;k++) {
+			int[][] plateau2=new int[12][12];
+			String[][]plateau=new String[12][12];
+			plateau[5][5]="Chateau";
+			System.out.println("Joueur "+k);
+			System.out.println("Votre nom");
+			String name=scanner.nextLine();
+			boolean flag=true;
+			ArrayList<String> listeCouleur=new ArrayList(Arrays.asList("Vert","vert","Bleu","bleu","Rose","rose","Jaune","jaune"));
+			String color="";
+			while(flag) {
+				System.out.println("Votre couleur (Rose, Vert, Bleu ou Jaune)");
+				color=scanner.nextLine();
+				if(listeCouleur.contains(color)){
+					flag=false;
+				}
+			}
+			Joueur joueur =new Joueur(name,color,plateau,plateau2);
+			listeJoueur.add(joueur);
+			if(nbrJoueur==2) {
+				listeJoueur.add(joueur);
+			}
+		}
+		for(int k=0;k<15;k++) {
+			Random random = new Random();
+			int nbrAleatoire=random.nextInt(2);
+			System.out.println(nbrAleatoire);
+		}
+		
+		Collections.shuffle(listeJoueur);
+		System.out.println(listeJoueur.get(0).getName());
+		listeDomino=game.creationDomino(nbrJoueur);
+		System.out.println(listeDomino);
+		while(listeDomino.size()!=0) {
+			listeDominoTirage=game.tirageDomino(nbrJoueur,listeDomino);
+			ArrayList <Joueur> listeJoueurPlacage = new ArrayList(listeJoueur);
+			System.out.println(listeJoueur);
+			ArrayList<Domino> listeDominoSortie=game.choixDomino(listeDominoTirage,listeJoueur);
+			System.out.println(listeJoueur);
+			System.out.println(listeJoueurPlacage);
+			System.out.println(listeDominoSortie);
+			listeJoueurPlacage.get(0).afficherPlateau(listeJoueurPlacage.get(0).getPlateau(),listeJoueurPlacage.get(0).getPlateau2());
+			game.tourPlacageDomino(listeJoueurPlacage,listeDominoSortie);
+			System.out.println(listeJoueur);
+		}
+		ArrayList<Integer> listeResultat = new ArrayList<>();
+		for(int i=0;i<nbrJoueur;i++) {
+			int total=listeJoueur.get(i).comptagePoints(listeJoueur.get(i).getPlateau(), listeJoueur.get(i).getPlateau2());
+			System.out.println(listeJoueur.get(i).getName());
+			System.out.println(total);
+			listeResultat.add(total);
+		}
+		int rangVainqueur=listeResultat.indexOf(Collections.max(listeResultat));
+		System.out.println(listeJoueur.get(rangVainqueur).getName()+" est le vainqueur");
+	}
+
+}
