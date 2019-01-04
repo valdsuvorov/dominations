@@ -1,0 +1,193 @@
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.Scanner;
+
+public class Game {
+	int nbrJoueur;
+	ArrayList<Domino> listeDomino;
+	
+	public Game(int nbrJoueur, ArrayList<Domino> listeDomino) {
+		this.nbrJoueur=nbrJoueur;
+		this.listeDomino=listeDomino;
+	}
+
+	public int getNbrJoueur() {
+		return nbrJoueur;
+	}
+
+	public void setNbrJoueur(int nbrJoueur) {
+		this.nbrJoueur = nbrJoueur;
+	}
+
+	public ArrayList<Domino> getListeDomino() {
+		return listeDomino;
+	}
+
+	public void setListeDomino(ArrayList<Domino> listeDomino) {
+		this.listeDomino = listeDomino;
+	}
+	Random random =new Random();
+	public ArrayList<Domino> creationDomino(int nbrJoueur){
+		ArrayList<Domino> listeDomino =new ArrayList<>();
+		BufferedReader reader = null;
+
+		try {
+		    File file = new File("/Users/Matthieu/Downloads/dominos.csv"); // A CHANGER SELON L UTILISATEUR!!!!!
+		    reader = new BufferedReader(new FileReader(file));
+
+		    String line;
+		    int n=0;
+		    HashMap<Integer, String> list = new HashMap<Integer, String>();
+		    while ((line = reader.readLine()) != null) {
+		        System.out.println(line);
+		        list.put(n,line);
+		        n++;
+		        
+		        
+		    }
+			String valListe = list.get(3);  // ici je teste le dictionnaire list 
+			String[] valListeSep = valListe.split(","); //split() me permet de separer un String selon ce que je veux 
+			System.out.println(valListe);  // j affiche les infos du domino 1 
+			System.out.println(valListeSep[1]);  // ainsi je récupere la deuxieme info du domino 1, c'est a dire champ ( qu on mettra en numeral après )
+		    System.out.println(Arrays.asList(list)); //affiche le dictionnaire list
+		    for(int k=1;k<list.size();k++) {
+		    	String valList=list.get(k);
+		    	String[] valListSep=valList.split(",");
+		    	int numero= Integer.parseInt(valListSep[4]);
+		    	String royaume1= valListSep[1];
+		    	int nbrCouronne1= Integer.parseInt(valListSep[0]);
+		    	String royaume2= valListSep[3];
+		    	int nbrCouronne2= Integer.parseInt(valListSep[2]);
+		    	Domino domino = new Domino(numero,royaume1,nbrCouronne1,royaume2,nbrCouronne2);
+		    	listeDomino.add(domino);
+		    }
+
+
+		} catch (IOException e) {
+		    e.printStackTrace();
+		} finally {
+		    try {
+		        reader.close();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
+		}
+		int nbrDominoEnleve=(4-nbrJoueur)*12;
+		
+		int nbrDomino=48;
+		while(nbrDominoEnleve!=0) {
+			int nbrAleatoire = random.nextInt(nbrDomino);
+			listeDomino.remove(listeDomino.get(nbrAleatoire));
+			nbrDominoEnleve--;
+			nbrDomino--;
+		}
+		System.out.println(listeDomino);
+		return listeDomino;
+	}
+	
+	public ArrayList<Domino> tirageDomino(int nbrJoueur, ArrayList<Domino>listeDomino) {
+		ArrayList<ArrayList> resultat = new ArrayList<>();
+		ArrayList<Domino> listeDominoTirage = new ArrayList<>();
+		ArrayList<Domino> listeDominoTirageTrie = new ArrayList<>();
+		ArrayList<Integer> listeNbrAlea = new ArrayList<>();
+		ArrayList<ArrayList> listeResultat = new ArrayList<>();
+		if(nbrJoueur==3) {
+			for(int i=0;i<3;i++) {
+				int nbrAleatoire = random.nextInt(listeDomino.size());
+				listeDominoTirage.add(listeDomino.get(nbrAleatoire));
+				listeDomino.remove(listeDomino.get(nbrAleatoire));
+			}
+			while(listeDominoTirage.size()!=0) {
+				int a=49;
+				int b=0;
+				for(int i=0;i<listeDominoTirage.size();i++) {
+					if(listeDominoTirage.get(i).getNumero()<a) {
+						a=listeDominoTirage.get(i).getNumero();
+						b=i;
+					}
+				}
+				listeDominoTirageTrie.add(listeDominoTirage.get(b));
+				listeDominoTirage.remove(listeDominoTirage.get(b));
+				System.out.println(b);
+			}
+			for(int i=0;i<3;i++) {
+				System.out.println(listeDominoTirageTrie.get(i).getNumero()+" "+listeDominoTirageTrie.get(i).getRoyaume1()+" "+listeDominoTirageTrie.get(i).getNbrCouronne1()+" "+listeDominoTirageTrie.get(i).getRoyaume2()+" "+listeDominoTirageTrie.get(i).getNbrCouronne2());
+			}
+		}
+		else {
+			for(int i=0;i<4;i++) {
+				int nbrAleatoire = random.nextInt(listeDomino.size());
+				listeDominoTirage.add(listeDomino.get(nbrAleatoire));
+				listeDomino.remove(listeDomino.get(nbrAleatoire));
+			}
+			while(listeDominoTirage.size()!=0) {
+				int a=49;
+				int b=0;
+				for(int i=0;i<listeDominoTirage.size();i++) {
+					if(listeDominoTirage.get(i).getNumero()<a) {
+						a=listeDominoTirage.get(i).getNumero();
+						b=i;
+					}
+				}
+				listeDominoTirageTrie.add(listeDominoTirage.get(b));
+				listeDominoTirage.remove(listeDominoTirage.get(b));
+				System.out.println(b);
+			}
+			for(int i=0;i<4;i++) {
+				System.out.println(listeDominoTirageTrie.get(i).getNumero()+" "+listeDominoTirageTrie.get(i).getRoyaume1()+" "+listeDominoTirageTrie.get(i).getNbrCouronne1()+" "+listeDominoTirageTrie.get(i).getRoyaume2()+" "+listeDominoTirageTrie.get(i).getNbrCouronne2());
+			}
+		}
+		return listeDominoTirageTrie;
+	}
+	public ArrayList<Domino> choixDomino(ArrayList<Domino> listeDominoTirageTrie,ArrayList<Joueur> listeJoueur) {
+		ArrayList<Domino> listeDominoTirageAnnexe=new ArrayList(listeDominoTirageTrie);
+		ArrayList<Joueur> listeJoueurAnnexe=new ArrayList(listeJoueur);
+		ArrayList<Domino> listeDominoSortie=new ArrayList<>();
+		System.out.println(listeJoueurAnnexe);
+		while(listeJoueur.size()!=0) {
+			System.out.println(listeJoueur.get(0).getName()+", quel domino choisissez-vous ?");
+			for(int i=0;i<listeDominoTirageTrie.size();i++) {
+				System.out.println(listeDominoTirageTrie.get(i).getNumero()+" "+listeDominoTirageTrie.get(i).getRoyaume1()+" "+listeDominoTirageTrie.get(i).getNbrCouronne1()+" "+listeDominoTirageTrie.get(i).getRoyaume2()+" "+listeDominoTirageTrie.get(i).getNbrCouronne2());
+			}
+			Scanner scanner = new Scanner(System.in);
+			int choixDomino=scanner.nextInt();
+			int rang=0;
+			for(int i=0;i<listeDominoTirageTrie.size();i++) {
+				if(choixDomino==listeDominoTirageTrie.get(i).getNumero()) {
+					rang=i;
+				}
+			}
+			int rang2=0;
+			for(int i=0;i<listeDominoTirageAnnexe.size();i++) {
+				if(choixDomino==listeDominoTirageAnnexe.get(i).getNumero()) {
+					rang2=i;
+				}
+			}
+			listeDominoSortie.add(listeDominoTirageTrie.get(rang));
+			listeJoueurAnnexe.set(rang2,listeJoueur.get(0));
+			listeDominoTirageTrie.remove(listeDominoTirageTrie.get(rang));
+			listeJoueur.remove(listeJoueur.get(0));
+			System.out.println(listeDominoTirageTrie);
+			System.out.println(listeJoueurAnnexe);
+			System.out.println(listeDominoSortie);
+			
+		}
+		listeJoueur.addAll(listeJoueurAnnexe);
+		return listeDominoSortie;
+	}
+	public void tourPlacageDomino(ArrayList<Joueur> listeJoueurPlacage,ArrayList<Domino> listeDominoSortie) {
+		
+		while(listeJoueurPlacage.size()!=0) {
+			listeJoueurPlacage.get(0).placage(listeJoueurPlacage.get(0).getPlateau(),listeDominoSortie,listeJoueurPlacage.get(0).getPlateau2());
+			listeJoueurPlacage.remove(listeJoueurPlacage.get(0));
+			listeDominoSortie.remove(listeDominoSortie.get(0));
+		}
+	}
+}
