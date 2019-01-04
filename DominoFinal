@@ -1,0 +1,58 @@
+
+public class Domino {
+	int numero;
+	String royaume1;
+	int nbrCouronne1;
+	String royaume2;
+	int nbrCouronne2;
+	
+	public Domino(int numero,String royaume1, int nbrCouronne1,String royaume2, int nbrCouronne2) {
+		this.numero=numero;
+		this.royaume1=royaume1;
+		this.nbrCouronne1=nbrCouronne1;
+		this.royaume2=royaume2;
+		this.nbrCouronne2=nbrCouronne2;
+	}
+
+	public int getNumero() {
+		return numero;
+	}
+
+	public void setNumero(int numero) {
+		this.numero = numero;
+	}
+
+	public String getRoyaume1() {
+		return royaume1;
+	}
+
+	public void setRoyaume1(String royaume1) {
+		this.royaume1 = royaume1;
+	}
+
+	public int getNbrCouronne1() {
+		return nbrCouronne1;
+	}
+
+	public void setNbrCouronne1(int nbrCouronne1) {
+		this.nbrCouronne1 = nbrCouronne1;
+	}
+
+	public String getRoyaume2() {
+		return royaume2;
+	}
+
+	public void setRoyaume2(String royaume2) {
+		this.royaume2 = royaume2;
+	}
+
+	public int getNbrCouronne2() {
+		return nbrCouronne2;
+	}
+
+	public void setNbrCouronne2(int nbrCouronne2) {
+		this.nbrCouronne2 = nbrCouronne2;
+	}
+	
+	
+}
