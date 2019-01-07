@@ -75,6 +75,116 @@ public class Joueur {
 			System.out.println();
 		}
 	}
+	
+		public void afficherMatriceDomino(String[][]plateauType,int[][]plateauCouronne ) {  // je crée une fonction qui ajoute un seul demi domino avec les valeurs de position, de type et le nombre de couronnes
+    	JFrame frame =new JFrame("Matrice"); 
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    JPanel panel = new JPanel(new GridLayout(0,11));
+	    Font font = new Font("Lato", Font.BOLD, 18);
+	    String valeur="";
+	    for( int i=0; i<11; i++) {
+	        for( int j=0; j<11; j++) {
+	            valeur = plateauType[i][j] + ":" + plateauCouronne[i][j];
+	            JPanel affichePlateau = new JPanel();
+	            affichePlateau.setPreferredSize(new Dimension(80,80));
+	            affichePlateau.setLayout(new GridBagLayout());
+	            affichePlateau.setBorder(BorderFactory.createLineBorder(Color.black));
+	            affichePlateau.setFont(font);
+	            
+	            switch (valeur) { 
+	            case "Champs:0" :
+	            	affichePlateau.setBackground(Color.YELLOW); 
+	            	break;
+	            case "Champs:1" :
+	            	affichePlateau.setBackground(Color.YELLOW);  
+	            	affichePlateau.add(new JLabel("1"));
+	            	break;
+	            case "Champs:2" :
+	            	affichePlateau.setBackground(Color.YELLOW);  
+	            	affichePlateau.add(new JLabel("2"));
+	            	break;
+	            	
+	            case "Prairie:0" :
+	            	affichePlateau.setBackground(Color.GREEN);  
+	            	break;
+	            case "Prairie:1" :
+	            	affichePlateau.setBackground(Color.GREEN);  
+	            	affichePlateau.add(new JLabel("1"));
+	            	break;
+	            case "Prairie:2" :
+	            	affichePlateau.setBackground(Color.GREEN);  
+	            	affichePlateau.add(new JLabel("2"));
+	            	break;
+	            
+	            case "Foret:0" :
+	            	affichePlateau.setBackground(DARK_GREEN);  
+	            	break;
+	            case "Foret:1" :
+	            	affichePlateau.setBackground(DARK_GREEN);  
+	            	affichePlateau.add(new JLabel("1"));
+	            	break;
+	            case "Foret:2" :
+	            	affichePlateau.setBackground(DARK_GREEN);  
+	            	affichePlateau.add(new JLabel("2"));
+	            	break;
+	            	
+	            case "Mer:0" :
+	            	affichePlateau.setBackground(Color.BLUE);  
+	            	break;
+	            case "Mer:1" :
+	            	affichePlateau.setBackground(Color.BLUE);  
+	            	affichePlateau.add(new JLabel("1"));
+	            	break;
+	            case "Mer:2" :
+	            	affichePlateau.setBackground(Color.BLUE);  
+	            	affichePlateau.add(new JLabel("2"));
+	            	break;
+	            	
+	            case "Montagne:0" :
+	            	affichePlateau.setBackground(BROWN);  
+	            	break;
+	            case "Montagne:1" :
+	            	affichePlateau.setBackground(BROWN);  
+	            	affichePlateau.add(new JLabel("1"));
+	            	break;
+	            case "Montagne:2" :
+	            	affichePlateau.setBackground(BROWN);  
+	            	affichePlateau.add(new JLabel("2"));
+	            	break;
+	            
+	            case "Mine:0" :
+	            	affichePlateau.setBackground(Color.GRAY);  
+	            	break;
+	            case "Mine:1" :
+	            	affichePlateau.setBackground(Color.GRAY);  
+	            	affichePlateau.add(new JLabel("1"));
+	            	break;
+	            case "Mine:2" :
+	            	affichePlateau.setBackground(Color.GRAY);  
+	            	affichePlateau.add(new JLabel("2"));
+	            	break;
+	            	
+	            case "Chateau:0" :
+	            	affichePlateau.setBackground(Color.RED);  
+	            	break;
+	            	
+	            case "null:0" :
+	            	affichePlateau.setBackground(Color.WHITE);  
+	            	break;
+	            	
+	            default: 
+	            	affichePlateau.setBackground(Color.WHITE);
+	            	break;
+	            }
+	            panel.add(affichePlateau);
+	        }
+	    }
+	    frame.add(panel);  //ce ne sont que des fonctions d'affichage de l'onglet
+	    frame.pack();
+	    frame.setLocationRelativeTo(null);
+	    frame.setVisible(true);
+    }
+    
 	public void placement(String[][] plateauType,ArrayList<Domino> listeDominoSortie,int[][]plateauCouronne) {
 		/*
 		 *  Les 12 prochaines lignes semblent inutiles; cependant sans elles on ne peut pas déterminer pour un tableau si un type est égal à un autre
@@ -227,6 +337,7 @@ public class Joueur {
 		}
 		
 		afficherPlateau(plateauType,plateauCouronne); // on affiche le nouveau plateau
+		afficherMatriceDomino(matrice,matrice2);
 			
 	}
 	public boolean coupPossible(String[][]plateauType,int u,int m,String v,String type1,String type2) {
