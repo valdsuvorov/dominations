@@ -349,7 +349,7 @@ public class Joueur {
 		}
 		
 		afficherPlateau(plateauType,plateauCouronne); // on affiche le nouveau plateau
-		afficherMatriceDomino(matrice,matrice2);
+		afficherMatriceDomino(plateauType,plateauCouronne);
 			
 	}
 	public boolean coupPossible(String[][]plateauType,int u,int m,String v,String type1,String type2) {
