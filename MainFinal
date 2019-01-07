@@ -7,19 +7,33 @@ import java.util.Scanner;
 public class Main {
 
 	public static void main(String[] args) {
+		Scanner scanner =new Scanner(System.in);
 		// TODO Auto-generated method stub
 		ArrayList<Domino> listeDomino=new ArrayList<>();
 		ArrayList<Domino> listeDominoTirage=new ArrayList<>();
-		Scanner scanner =new Scanner(System.in);
 		int nbrJoueur=0;
+		int nbrIA=0;
 		while(nbrJoueur>4 || nbrJoueur<2) {
 			System.out.println("Nombre de Joueurs ? (2,3,4)");
 			nbrJoueur=scanner.nextInt();
+			System.out.println("Nombre d'IA");
+			nbrIA=scanner.nextInt();
 		}
 		Game game=new Game(nbrJoueur,listeDomino);
 		scanner.nextLine();
 		ArrayList<Joueur> listeJoueur=new ArrayList<>();
-		for(int k=1;k<=nbrJoueur;k++) {
+		
+		for(int i=1;i<=nbrIA;i++) {
+			int[][] plateau2=new int[12][12];
+			String[][]plateau=new String[12][12];
+			plateau[5][5]="Chateau";
+			Joueur joueur = new Joueur("IA "+i,"Gris",plateau,plateau2,false);
+			listeJoueur.add(joueur);
+			if(nbrJoueur==2) {
+				listeJoueur.add(joueur);
+			}
+		}
+		for(int k=1;k<=nbrJoueur-nbrIA;k++) {
 			int[][] plateau2=new int[12][12];
 			String[][]plateau=new String[12][12];
 			plateau[5][5]="Chateau";
@@ -36,33 +50,22 @@ public class Main {
 					flag=false;
 				}
 			}
-			Joueur joueur =new Joueur(name,color,plateau,plateau2);
+			Joueur joueur =new Joueur(name,color,plateau,plateau2,true);
 			listeJoueur.add(joueur);
 			if(nbrJoueur==2) {
 				listeJoueur.add(joueur);
 			}
 		}
-		for(int k=0;k<15;k++) {
-			Random random = new Random();
-			int nbrAleatoire=random.nextInt(2);
-			System.out.println(nbrAleatoire);
-		}
 		
 		Collections.shuffle(listeJoueur);
-		System.out.println(listeJoueur.get(0).getName());
 		listeDomino=game.creationDomino(nbrJoueur);
-		System.out.println(listeDomino);
+		System.out.println(listeJoueur.size());
 		while(listeDomino.size()!=0) {
 			listeDominoTirage=game.tirageDomino(nbrJoueur,listeDomino);
 			ArrayList <Joueur> listeJoueurPlacage = new ArrayList(listeJoueur);
-			System.out.println(listeJoueur);
 			ArrayList<Domino> listeDominoSortie=game.choixDomino(listeDominoTirage,listeJoueur);
-			System.out.println(listeJoueur);
-			System.out.println(listeJoueurPlacage);
-			System.out.println(listeDominoSortie);
 			listeJoueurPlacage.get(0).afficherPlateau(listeJoueurPlacage.get(0).getPlateau(),listeJoueurPlacage.get(0).getPlateau2());
 			game.tourPlacageDomino(listeJoueurPlacage,listeDominoSortie);
-			System.out.println(listeJoueur);
 		}
 		ArrayList<Integer> listeResultat = new ArrayList<>();
 		for(int i=0;i<nbrJoueur;i++) {
