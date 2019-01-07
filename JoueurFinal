@@ -7,12 +7,14 @@ public class Joueur {
 	String color;
 	String[][] plateau;
 	int[][]plateau2;
+	boolean isHuman;
 	
-	public Joueur (String name,String color,String [][] plateau,int[][]plateau2) {
+	public Joueur (String name,String color,String [][] plateau,int[][]plateau2,boolean isHuman) {
 		this.name=name;
 		this.color=color;
 		this.plateau=plateau;
 		this.plateau2=plateau2;
+		this.isHuman=isHuman;
 	}
 
 	public String getName() {
@@ -46,8 +48,15 @@ public class Joueur {
 	public void setPlateau2(int[][] plateau2) {
 		this.plateau2 = plateau2;
 	}
-
 	
+	public boolean isHuman() {
+		return isHuman;
+	}
+
+	public void setHuman(boolean isHuman) {
+		this.isHuman = isHuman;
+	}
+
 	public void afficherPlateau(String[][]plateau,int[][]plateau2) {
 		for(int i=0;i<12;i++) {
 			for(int k=0;k<12;k++) {
@@ -85,9 +94,6 @@ public class Joueur {
 		ArrayList<int[]> liste = new ArrayList<>();
 		ArrayList<Integer> liste1 = new ArrayList<>();
 		ArrayList<ArrayList> listeCasePrise = new ArrayList<>();
-
-		System.out.println(type1);
-		System.out.println(matrice[5][5]==type1);
 		for(int k=0;k<matrice.length;k++) {
 			for(int j=0;j<matrice[0].length;j++) {
 				if(matrice[k][j]!=null) {
@@ -114,7 +120,6 @@ public class Joueur {
 		if(chaine.equals("v")) {
 			System.out.println("Voulez-vous inversez le domino ?(oui ou non)");
 			String chaineInversement=scanner.nextLine();
-			System.out.println(type1);
 			if(chaineInversement.contentEquals("oui")){
 				String chaineAnnexe=type1;
 				type1=type2;
@@ -138,11 +143,23 @@ public class Joueur {
 			System.out.println(listeCoupPossible);
 			if(listeCoupPossible.size()==0) {
 				System.out.println("Pas de coup jouable");
+				System.out.println("coucou");
+				String chaine3=scanner.nextLine();
+				if(chaine3.equals("oui")) {
+					placage(matrice, listeDominoSortie,matrice2);
+				}
+				
 			}
 			else {
 				ArrayList<Integer> listeCouple2 = new ArrayList<>();
 				ArrayList<Integer> listeCouple3 = new ArrayList<>();
-				int n=scanner.nextInt();
+				System.out.println("Entrez oui si vous voulez changer la position du domino ou entrez la première coordonnée");
+				String chaine2=scanner.nextLine();
+				if(chaine2.equals("oui")) {
+					placage(matrice, listeDominoSortie,matrice2);
+					return;
+				}
+				int n=Integer.parseInt(chaine2);
 				int m=scanner.nextInt();
 				listeCouple2.add(n);
 				listeCouple2.add(m);
@@ -166,6 +183,16 @@ public class Joueur {
 			
 		}
 		if(chaine.equals("h")) {
+			System.out.println("Voulez-vous inversez le domino ?(oui ou non)");
+			String chaineInversement=scanner.nextLine();
+			if(chaineInversement.equals("oui")){
+				String chaineAnnexe=type1;
+				type1=type2;
+				type2=chaineAnnexe;
+				int intAnnexe=nbrCour1;
+				nbrCour1=nbrCour2;
+				nbrCour2=intAnnexe;
+			}
 			for(int u=1;u<10;u++) {
 				for(int m=1;m<10;m++) {
 					ArrayList<Integer> listeCoupPossible1 = new ArrayList<>();
@@ -181,11 +208,23 @@ public class Joueur {
 			System.out.println(listeCoupPossible);
 			if(listeCoupPossible.size()==0) {
 				System.out.println("Pas de coup jouable");
+				System.out.println("coucou");
+				String chaine3=scanner.nextLine();
+				if(chaine3.equals("oui")) {
+					placage(matrice, listeDominoSortie,matrice2);
+				}
+				
 			}
 			else {
 				ArrayList<Integer> listeCouple2 = new ArrayList<>();
 				ArrayList<Integer> listeCouple3 = new ArrayList<>();
-				int n=scanner.nextInt();
+				System.out.println("Entrez oui si vous voulez changer la position du domino ou entrez la première coordonnée");
+				String chaine2=scanner.nextLine();
+				if(chaine2.equals("oui")) {
+					placage(matrice, listeDominoSortie,matrice2);
+					return;
+				}
+				int n=Integer.parseInt(chaine2);
 				int m=scanner.nextInt();
 				listeCouple2.add(n);
 				listeCouple2.add(m);
@@ -224,9 +263,9 @@ public class Joueur {
 			else if(test(matrice,u,m,flag)){
 				return false;
 			}
-			else if(toucherNon(matrice,u,m,type1) || toucherNon(matrice,u+1,m,type2)) {
+			/*else if(toucherNon(matrice,u,m,type1) || toucherNon(matrice,u+1,m,type2)) {
 				return false;
-			}
+			}*/
 			else {
 				boolean a=toucher(matrice,u,m,type1);
 				boolean b=toucher(matrice,u+1,m,type2);
@@ -241,9 +280,9 @@ public class Joueur {
 			else if(test(matrice,u,m,flag)){
 				return false;
 			}
-			else if(toucherNon(matrice,u,m,type1) || toucherNon(matrice,u,m+1,type2)) {
+			/*else if(toucherNon(matrice,u,m,type1) || toucherNon(matrice,u,m+1,type2)) {
 				return false;
-			}
+			}*/
 			else {
 				boolean a=toucher(matrice,u,m,type1);
 				boolean b=toucher(matrice,u,m+1,type2);
@@ -397,9 +436,6 @@ public class Joueur {
 					for(int m=0;m<listeCaseLie.size();m++) {
 						nbrCouronne=nbrCouronne+matrice2[listeCaseLie.get(m).get(0)][listeCaseLie.get(m).get(1)];
 					}
-					System.out.println(type);
-					System.out.println(nbrCouronne);
-					System.out.println(listeCaseLie.size());
 					points=points+listeCaseLie.size()*nbrCouronne;
 					listeCaseCompte.addAll(listeCaseLie);
 				}
@@ -418,4 +454,139 @@ public class Joueur {
 		nbrCour2=intAnnexe;
 		
 	}
+	
+	public void placageIA(String[][] matrice,ArrayList<Domino> listeDominoSortie,int[][]matrice2) {
+		ArrayList<String> listeType=new ArrayList<>(Arrays.asList("Mer","Foret","Prairie","Montagne","Champs","Mine"));
+		String type1="";
+		for(int i=0;i<6;i++) {
+			if(listeDominoSortie.get(0).getRoyaume1().equals(listeType.get(i))){
+				type1=listeType.get(i);
+			}
+		}
+		String type2="";
+		for(int i=0;i<6;i++) {
+			if(listeDominoSortie.get(0).getRoyaume2().equals(listeType.get(i))){
+				type2=listeType.get(i);
+			}
+		}
+		int nbrCour1=listeDominoSortie.get(0).getNbrCouronne1();
+		int nbrCour2=listeDominoSortie.get(0).getNbrCouronne2();
+		int pointsMax=0;
+		int coord1Max=0;
+		int coord2Max=0;
+		int coord3Max=0;
+		int coord4Max=0;
+		String chaine="h";
+		for(int i=0;i<2;i++) {
+			String chaineInversement="oui";
+			for(int k=0;k<2;k++) {
+				if(chaine.equals("h")) {
+					System.out.println("coucou");
+					if(chaineInversement.equals("oui")){
+						String chaineAnnexe=type1;
+						type1=type2;
+						type2=chaineAnnexe;
+						int intAnnexe=nbrCour1;
+						nbrCour1=nbrCour2;
+						nbrCour2=intAnnexe;
+					}
+					ArrayList<ArrayList> listeCoupPossible = new ArrayList<>();
+					for(int u=1;u<10;u++) {
+						for(int m=1;m<10;m++) {
+							ArrayList<Integer> listeCoupPossible1 = new ArrayList<>();
+							
+							if(coupPossible(matrice,u,m,chaine,type1,type2)) {
+								listeCoupPossible1.add(u);
+								listeCoupPossible1.add(m);
+								listeCoupPossible.add(listeCoupPossible1);
+								
+							}
+						}
+					}
+					if(listeCoupPossible.size()==0) {
+						return;
+					}
+					for(int iterator=0;iterator<listeCoupPossible.size();iterator++) {
+						String[][]matriceCopie=new String[12][12];
+						int[][]matrice2Copie=new int[12][12];
+						for(int u=0;u<12;u++) {
+							for(int m=0;m<12;m++) {
+								matriceCopie[u][m]=matrice[u][m];
+								matrice2Copie[u][m]=matrice2[u][m];
+							}
+						}
+						ArrayList<Integer> couple = listeCoupPossible.get(0);
+						matriceCopie[couple.get(0)][couple.get(1)]=type1;
+						matriceCopie[couple.get(0)][couple.get(1)+1]=type2;
+						matrice2Copie[couple.get(0)][couple.get(1)]=nbrCour1;
+						matrice2Copie[couple.get(0)][couple.get(1)+1]=nbrCour2;
+						int points=comptagePoints(matriceCopie,matrice2Copie);
+						if(pointsMax<=points) {
+							pointsMax=points;
+							coord1Max=couple.get(0);
+							coord2Max=couple.get(1);
+							coord3Max=couple.get(0);
+							coord4Max=couple.get(1)+1;
+						}
+					}
+				}
+				if(chaine.equals("v")) {
+					if(chaineInversement.equals("oui")){
+						String chaineAnnexe=type1;
+						type1=type2;
+						type2=chaineAnnexe;
+						int intAnnexe=nbrCour1;
+						nbrCour1=nbrCour2;
+						nbrCour2=intAnnexe;
+					}
+					ArrayList<ArrayList> listeCoupPossible = new ArrayList<>();
+					for(int u=1;u<10;u++) {
+						for(int m=1;m<10;m++) {
+							ArrayList<Integer> listeCoupPossible1 = new ArrayList<>();
+							
+							if(coupPossible(matrice,u,m,chaine,type1,type2)) {
+								listeCoupPossible1.add(u);
+								listeCoupPossible1.add(m);
+								listeCoupPossible.add(listeCoupPossible1);
+								
+							}
+						}
+					}
+					if(listeCoupPossible.size()==0) {
+						return;
+					}
+					for(int iterator=0;iterator<listeCoupPossible.size();iterator++) {
+						String[][]matriceCopie=new String[12][12];
+						int[][]matrice2Copie=new int[12][12];
+						for(int u=0;u<12;u++) {
+							for(int m=0;m<12;m++) {
+								matriceCopie[u][m]=matrice[u][m];
+								matrice2Copie[u][m]=matrice2[u][m];
+							}
+						}
+						ArrayList<Integer> couple = listeCoupPossible.get(0);
+						matriceCopie[couple.get(0)][couple.get(1)]=type1;
+						matriceCopie[couple.get(0)+1][couple.get(1)]=type2;
+						matrice2Copie[couple.get(0)][couple.get(1)]=nbrCour1;
+						matrice2Copie[couple.get(0)+1][couple.get(1)]=nbrCour2;
+						int points=comptagePoints(matriceCopie,matrice2Copie);
+						if(pointsMax<=points) {
+							pointsMax=points;
+							coord1Max=couple.get(0);
+							coord2Max=couple.get(1);
+							coord3Max=couple.get(0)+1;
+							coord4Max=couple.get(1);
+						}
+					}
+				}
+				chaineInversement="non";
+			}
+			chaine="v";
+		}
+		matrice[coord1Max][coord2Max]=type1;
+		matrice[coord3Max][coord4Max]=type2;
+		matrice2[coord1Max][coord2Max]=nbrCour1;
+		matrice2[coord3Max][coord4Max]=nbrCour2;
+	}
+	
 }
