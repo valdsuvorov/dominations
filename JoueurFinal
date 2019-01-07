@@ -8,6 +8,8 @@ public class Joueur {
 	String[][] plateauType;
 	int[][]plateauCouronne;
 	boolean isHuman;
+	Color DARK_GREEN = new Color(0,100,0);
+	Color BROWN = new Color(139,69,19);
 	
 	public Joueur (String name,String color,String [][] plateauType,int[][]plateauCouronne,boolean isHuman) {
 		this.name=name;
