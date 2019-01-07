@@ -60,6 +60,8 @@ public class Main {
 			ArrayList <Joueur> listeJoueurPlacement = new ArrayList(listeJoueur); //on fait une copie de la liste car la liste joueur va être modifié durant la prochaine fonction
 			ArrayList<Domino> listeDominoSortie=game.choixDomino(listeDominoTirage,listeJoueur); //on sort les dominos suivant une liste qui correspond à la copie de la liste joueur créée précedemment
 			listeJoueurPlacement.get(0).afficherPlateau(listeJoueurPlacement.get(0).getPlateauType(),listeJoueurPlacement.get(0).getPlateauCouronne());
+			listeJoueurPlacement.get(0).afficherMatriceDomino(listeJoueurPlacement.get(0).getPlateauType(),listeJoueurPlacement.get(0).getPlateauCouronne());
+			listeJoueurPlacement.get(1).afficherMatriceDomino(listeJoueurPlacement.get(1).getPlateauType(),listeJoueurPlacement.get(1).getPlateauCouronne());
 			game.tourPlacageDomino(listeJoueurPlacement,listeDominoSortie); // On fait le tour de placement du domino
 		}
 		ArrayList<Integer> listeResultat = new ArrayList<>(); // Création d'une liste où tous les points seront stockés
