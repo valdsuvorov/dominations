@@ -9,7 +9,7 @@ public class Main {
 	public static void main(String[] args) {
 		Scanner scanner =new Scanner(System.in);
 		// TODO Auto-generated method stub
-		ArrayList<Domino> listeDomino=new ArrayList<>();
+		ArrayList<Domino> listeDomino=new ArrayList<>(); // Création de deux listes de domino, la première contient tous les dominos de la partie et la deuxième contient les dominos tirés
 		ArrayList<Domino> listeDominoTirage=new ArrayList<>();
 		int nbrJoueur=0;
 		int nbrIA=0;
@@ -19,63 +19,58 @@ public class Main {
 			System.out.println("Nombre d'IA");
 			nbrIA=scanner.nextInt();
 		}
-		Game game=new Game(nbrJoueur,listeDomino);
+		Game game=new Game(nbrJoueur,listeDomino); //Création d'un jeu
 		scanner.nextLine();
 		ArrayList<Joueur> listeJoueur=new ArrayList<>();
 		
-		for(int i=1;i<=nbrIA;i++) {
-			int[][] plateau2=new int[12][12];
-			String[][]plateau=new String[12][12];
-			plateau[5][5]="Chateau";
-			Joueur joueur = new Joueur("IA "+i,"Gris",plateau,plateau2,false);
-			listeJoueur.add(joueur);
+		for(int i=1;i<=nbrIA;i++) { // Création des IA
+			String[][]plateauType=new String[11][11]; //La création des deux matrices dans le for est essentiel pour éviter que cahque joueur ait le meme plateau
+			int[][] plateauCouronne=new int[11][11]; //Nous avons décidé de faire deux plateaux pour une plus simple manipulation
+			plateauType[5][5]="Chateau"; //Placement du chateau au milieu du plateau
+			Joueur joueur = new Joueur("IA "+i,"Gris",plateauType,plateauCouronne,false);
+			listeJoueur.add(joueur); //on ajoute le joueur à une liste de joueurs
 			if(nbrJoueur==2) {
-				listeJoueur.add(joueur);
+				listeJoueur.add(joueur); //on ajoute une deuxième fois le joueur pour avoir l'équivalent de 4 rois
 			}
 		}
-		for(int k=1;k<=nbrJoueur-nbrIA;k++) {
-			int[][] plateau2=new int[12][12];
-			String[][]plateau=new String[12][12];
-			plateau[5][5]="Chateau";
+		for(int k=1;k<=nbrJoueur-nbrIA;k++) { // on fait de meme que pour l'IA
+			String[][]plateauType=new String[11][11];
+			int[][] plateauCouronne=new int[11][11];
+			plateauType[5][5]="Chateau";
 			System.out.println("Joueur "+k);
 			System.out.println("Votre nom");
 			String name=scanner.nextLine();
-			boolean flag=true;
-			ArrayList<String> listeCouleur=new ArrayList(Arrays.asList("Vert","vert","Bleu","bleu","Rose","rose","Jaune","jaune"));
+			ArrayList<String> listeCouleur=new ArrayList(Arrays.asList("Vert","vert","Bleu","bleu","Rose","rose","Jaune","jaune")); //on entre dans une liste toutes les couleurs possibles en deux versions
 			String color="";
-			while(flag) {
+			while(!listeCouleur.contains(color)) {
 				System.out.println("Votre couleur (Rose, Vert, Bleu ou Jaune)");
 				color=scanner.nextLine();
-				if(listeCouleur.contains(color)){
-					flag=false;
-				}
 			}
-			Joueur joueur =new Joueur(name,color,plateau,plateau2,true);
+			Joueur joueur =new Joueur(name,color,plateauType,plateauCouronne,true);
 			listeJoueur.add(joueur);
 			if(nbrJoueur==2) {
 				listeJoueur.add(joueur);
 			}
 		}
 		
-		Collections.shuffle(listeJoueur);
-		listeDomino=game.creationDomino(nbrJoueur);
-		System.out.println(listeJoueur.size());
+		Collections.shuffle(listeJoueur); //on mélange aléatoirement la liste de joueur pour le premier tirage des rois
+		listeDomino=game.creationDomino(nbrJoueur); // on importe tous les dominos
 		while(listeDomino.size()!=0) {
-			listeDominoTirage=game.tirageDomino(nbrJoueur,listeDomino);
-			ArrayList <Joueur> listeJoueurPlacage = new ArrayList(listeJoueur);
-			ArrayList<Domino> listeDominoSortie=game.choixDomino(listeDominoTirage,listeJoueur);
-			listeJoueurPlacage.get(0).afficherPlateau(listeJoueurPlacage.get(0).getPlateau(),listeJoueurPlacage.get(0).getPlateau2());
-			game.tourPlacageDomino(listeJoueurPlacage,listeDominoSortie);
+			listeDominoTirage=game.tirageDomino(nbrJoueur,listeDomino); //on met tous les dominos tirés aléatoirement dans une liste
+			ArrayList <Joueur> listeJoueurPlacement = new ArrayList(listeJoueur); //on fait une copie de la liste car la liste joueur va être modifié durant la prochaine fonction
+			ArrayList<Domino> listeDominoSortie=game.choixDomino(listeDominoTirage,listeJoueur); //on sort les dominos suivant une liste qui correspond à la copie de la liste joueur créée précedemment
+			listeJoueurPlacement.get(0).afficherPlateau(listeJoueurPlacement.get(0).getPlateauType(),listeJoueurPlacement.get(0).getPlateauCouronne());
+			game.tourPlacageDomino(listeJoueurPlacement,listeDominoSortie); // On fait le tour de placement du domino
 		}
-		ArrayList<Integer> listeResultat = new ArrayList<>();
+		ArrayList<Integer> listeResultat = new ArrayList<>(); // Création d'une liste où tous les points seront stockés
 		for(int i=0;i<nbrJoueur;i++) {
-			int total=listeJoueur.get(i).comptagePoints(listeJoueur.get(i).getPlateau(), listeJoueur.get(i).getPlateau2());
+			int total=listeJoueur.get(i).comptagePoints(listeJoueur.get(i).getPlateauType(), listeJoueur.get(i).getPlateauCouronne()); // On compte les points pour chaque joueur
 			System.out.println(listeJoueur.get(i).getName());
 			System.out.println(total);
-			listeResultat.add(total);
+			listeResultat.add(total); //on ajoute chaque points pour chaque joueur qui seront classé suivant la liste joueur
 		}
-		int rangVainqueur=listeResultat.indexOf(Collections.max(listeResultat));
-		System.out.println(listeJoueur.get(rangVainqueur).getName()+" est le vainqueur");
+		int rangVainqueur=listeResultat.indexOf(Collections.max(listeResultat)); //on analyse le rang du vainqueur
+		System.out.println(listeJoueur.get(rangVainqueur).getName()+" est le vainqueur"); //on affiche le vainqueur grace au rang déterminé précédemment
 	}
 
 }
