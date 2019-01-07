@@ -54,9 +54,6 @@ public class Game {
 		    }
 			String valListe = list.get(3);  // ici je teste le dictionnaire list 
 			String[] valListeSep = valListe.split(","); //split() me permet de separer un String selon ce que je veux 
-			System.out.println(valListe);  // j affiche les infos du domino 1 
-			System.out.println(valListeSep[1]);  // ainsi je récupere la deuxieme info du domino 1, c'est a dire champ ( qu on mettra en numeral après )
-		    System.out.println(Arrays.asList(list)); //affiche le dictionnaire list
 		    for(int k=1;k<list.size();k++) {
 		    	String valList=list.get(k);
 		    	String[] valListSep=valList.split(",");
@@ -88,7 +85,6 @@ public class Game {
 			nbrDominoEnleve--;
 			nbrDomino--;
 		}
-		System.out.println(listeDomino);
 		return listeDomino;
 	}
 	
@@ -115,11 +111,8 @@ public class Game {
 				}
 				listeDominoTirageTrie.add(listeDominoTirage.get(b));
 				listeDominoTirage.remove(listeDominoTirage.get(b));
-				System.out.println(b);
 			}
-			for(int i=0;i<3;i++) {
-				System.out.println(listeDominoTirageTrie.get(i).getNumero()+" "+listeDominoTirageTrie.get(i).getRoyaume1()+" "+listeDominoTirageTrie.get(i).getNbrCouronne1()+" "+listeDominoTirageTrie.get(i).getRoyaume2()+" "+listeDominoTirageTrie.get(i).getNbrCouronne2());
-			}
+			
 		}
 		else {
 			for(int i=0;i<4;i++) {
@@ -138,11 +131,8 @@ public class Game {
 				}
 				listeDominoTirageTrie.add(listeDominoTirage.get(b));
 				listeDominoTirage.remove(listeDominoTirage.get(b));
-				System.out.println(b);
 			}
-			for(int i=0;i<4;i++) {
-				System.out.println(listeDominoTirageTrie.get(i).getNumero()+" "+listeDominoTirageTrie.get(i).getRoyaume1()+" "+listeDominoTirageTrie.get(i).getNbrCouronne1()+" "+listeDominoTirageTrie.get(i).getRoyaume2()+" "+listeDominoTirageTrie.get(i).getNbrCouronne2());
-			}
+			
 		}
 		return listeDominoTirageTrie;
 	}
@@ -152,22 +142,52 @@ public class Game {
 		ArrayList<Domino> listeDominoSortie=new ArrayList<>();
 		System.out.println(listeJoueurAnnexe);
 		while(listeJoueur.size()!=0) {
+			String[][] matrice=listeJoueur.get(0).getPlateau();
+			System.out.println(listeJoueur.size());
 			System.out.println(listeJoueur.get(0).getName()+", quel domino choisissez-vous ?");
 			for(int i=0;i<listeDominoTirageTrie.size();i++) {
 				System.out.println(listeDominoTirageTrie.get(i).getNumero()+" "+listeDominoTirageTrie.get(i).getRoyaume1()+" "+listeDominoTirageTrie.get(i).getNbrCouronne1()+" "+listeDominoTirageTrie.get(i).getRoyaume2()+" "+listeDominoTirageTrie.get(i).getNbrCouronne2());
 			}
 			Scanner scanner = new Scanner(System.in);
-			int choixDomino=scanner.nextInt();
+			int choixDomino=0;
+			if(listeJoueur.get(0).isHuman()) {
+				choixDomino=scanner.nextInt();
+			}
+			else {
+				ArrayList<Domino> listeDominoTirageTrieAnnexe = new ArrayList(listeDominoTirageTrie);
+				ArrayList<Integer> listeCompteur=ia(matrice);
+				ArrayList<String> listeType = new ArrayList<>(Arrays.asList("Montagne","Mine","Mer","Plaine","Champs","Foret"));
+				while(listeCompteur.size()!=0){
+					int rang3=listeCompteur.indexOf(Collections.max(listeCompteur));
+					String type=listeType.get(rang3);
+					for(int i=0;i<listeDominoTirageTrieAnnexe.size();i++){
+						String type1=listeDominoTirageTrieAnnexe.get(i).getRoyaume1();
+						String type2=listeDominoTirageTrieAnnexe.get(i).getRoyaume2();
+						if(type.equals(type1) || type.equals(type2)){
+							choixDomino=listeDominoTirageTrieAnnexe.get(i).getNumero();
+							break;
+						}
+					}
+					listeCompteur.remove(listeCompteur.get(rang3));
+				}
+				if(choixDomino==0) {
+					choixDomino=listeDominoTirageTrie.get(0).getNumero();
+				}
+			}
+			
+			 
 			int rang=0;
 			for(int i=0;i<listeDominoTirageTrie.size();i++) {
 				if(choixDomino==listeDominoTirageTrie.get(i).getNumero()) {
 					rang=i;
+					System.out.println(rang);
 				}
 			}
 			int rang2=0;
 			for(int i=0;i<listeDominoTirageAnnexe.size();i++) {
 				if(choixDomino==listeDominoTirageAnnexe.get(i).getNumero()) {
 					rang2=i;
+					System.out.println(rang2);
 				}
 			}
 			listeDominoSortie.add(listeDominoTirageTrie.get(rang));
@@ -183,11 +203,54 @@ public class Game {
 		return listeDominoSortie;
 	}
 	public void tourPlacageDomino(ArrayList<Joueur> listeJoueurPlacage,ArrayList<Domino> listeDominoSortie) {
-		
 		while(listeJoueurPlacage.size()!=0) {
-			listeJoueurPlacage.get(0).placage(listeJoueurPlacage.get(0).getPlateau(),listeDominoSortie,listeJoueurPlacage.get(0).getPlateau2());
+			if(listeJoueurPlacage.get(0).isHuman()) {
+				listeJoueurPlacage.get(0).placage(listeJoueurPlacage.get(0).getPlateau(),listeDominoSortie,listeJoueurPlacage.get(0).getPlateau2());
+			}
+			else {
+				listeJoueurPlacage.get(0).placageIA(listeJoueurPlacage.get(0).getPlateau(),listeDominoSortie,listeJoueurPlacage.get(0).getPlateau2());
+			}
 			listeJoueurPlacage.remove(listeJoueurPlacage.get(0));
 			listeDominoSortie.remove(listeDominoSortie.get(0));
 		}
+		System.out.println("Coup Place");
+	}
+	public ArrayList<Integer> ia(String[][]matrice){
+		ArrayList<Integer> listeCompteur = new ArrayList<>();
+		int compteurMer=0;
+		int compteurMontagne=0;
+		int compteurMine=0;
+		int compteurChamps=0;
+		int compteurPlaine=0;
+		int compteurForet=0;
+		for(int i=0;i<12;i++) {
+			for(int k=0;k<12;k++) {
+				if(matrice[i][k]=="Mer") {
+					compteurMer++;
+				}
+				if(matrice[i][k]=="Mine") {
+					compteurMine++;
+				}
+				if(matrice[i][k]=="Montagne") {
+					compteurMontagne++;
+				}
+				if(matrice[i][k]=="Plaine") {
+					compteurPlaine++;
+				}
+				if(matrice[i][k]=="Champs") {
+					compteurChamps++;
+				}
+				if(matrice[i][k]=="Foret") {
+					compteurForet++;
+				}
+			}
+		}
+		listeCompteur.add(compteurMontagne);
+		listeCompteur.add(compteurMine);
+		listeCompteur.add(compteurMer);
+		listeCompteur.add(compteurPlaine);
+		listeCompteur.add(compteurChamps);
+		listeCompteur.add(compteurForet);
+		return listeCompteur;
 	}
 }
