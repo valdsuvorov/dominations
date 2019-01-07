@@ -142,7 +142,7 @@ public class Game {
 		ArrayList<Domino> listeDominoSortie=new ArrayList<>();
 		System.out.println(listeJoueurAnnexe);
 		while(listeJoueur.size()!=0) {
-			String[][] matrice=listeJoueur.get(0).getPlateau();
+			String[][] matrice=listeJoueur.get(0).getPlateauType();
 			System.out.println(listeJoueur.size());
 			System.out.println(listeJoueur.get(0).getName()+", quel domino choisissez-vous ?");
 			for(int i=0;i<listeDominoTirageTrie.size();i++) {
@@ -202,20 +202,20 @@ public class Game {
 		listeJoueur.addAll(listeJoueurAnnexe);
 		return listeDominoSortie;
 	}
-	public void tourPlacageDomino(ArrayList<Joueur> listeJoueurPlacage,ArrayList<Domino> listeDominoSortie) {
-		while(listeJoueurPlacage.size()!=0) {
-			if(listeJoueurPlacage.get(0).isHuman()) {
-				listeJoueurPlacage.get(0).placage(listeJoueurPlacage.get(0).getPlateau(),listeDominoSortie,listeJoueurPlacage.get(0).getPlateau2());
+	public void tourPlacageDomino(ArrayList<Joueur> listeJoueurPlacement,ArrayList<Domino> listeDominoSortie) {
+		while(listeJoueurPlacement.size()!=0) {
+			if(listeJoueurPlacement.get(0).isHuman()) {
+				listeJoueurPlacement.get(0).placement(listeJoueurPlacement.get(0).getPlateauType(),listeDominoSortie,listeJoueurPlacement.get(0).getPlateauCouronne());
 			}
 			else {
-				listeJoueurPlacage.get(0).placageIA(listeJoueurPlacage.get(0).getPlateau(),listeDominoSortie,listeJoueurPlacage.get(0).getPlateau2());
+				listeJoueurPlacement.get(0).placementIA(listeJoueurPlacement.get(0).getPlateauType(),listeDominoSortie,listeJoueurPlacement.get(0).getPlateauCouronne());
 			}
-			listeJoueurPlacage.remove(listeJoueurPlacage.get(0));
+			listeJoueurPlacement.remove(listeJoueurPlacement.get(0));
 			listeDominoSortie.remove(listeDominoSortie.get(0));
 		}
 		System.out.println("Coup Place");
 	}
-	public ArrayList<Integer> ia(String[][]matrice){
+	public ArrayList<Integer> ia(String[][]plateauType){
 		ArrayList<Integer> listeCompteur = new ArrayList<>();
 		int compteurMer=0;
 		int compteurMontagne=0;
@@ -223,24 +223,24 @@ public class Game {
 		int compteurChamps=0;
 		int compteurPlaine=0;
 		int compteurForet=0;
-		for(int i=0;i<12;i++) {
-			for(int k=0;k<12;k++) {
-				if(matrice[i][k]=="Mer") {
+		for(int i=0;i<11;i++) {
+			for(int k=0;k<11;k++) {
+				if(plateauType[i][k]=="Mer") {
 					compteurMer++;
 				}
-				if(matrice[i][k]=="Mine") {
+				if(plateauType[i][k]=="Mine") {
 					compteurMine++;
 				}
-				if(matrice[i][k]=="Montagne") {
+				if(plateauType[i][k]=="Montagne") {
 					compteurMontagne++;
 				}
-				if(matrice[i][k]=="Plaine") {
+				if(plateauType[i][k]=="Plaine") {
 					compteurPlaine++;
 				}
-				if(matrice[i][k]=="Champs") {
+				if(plateauType[i][k]=="Champs") {
 					compteurChamps++;
 				}
-				if(matrice[i][k]=="Foret") {
+				if(plateauType[i][k]=="Foret") {
 					compteurForet++;
 				}
 			}
