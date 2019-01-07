@@ -5,15 +5,15 @@ import java.util.Scanner;
 public class Joueur {
 	String name;
 	String color;
-	String[][] plateau;
-	int[][]plateau2;
+	String[][] plateauType;
+	int[][]plateauCouronne;
 	boolean isHuman;
 	
-	public Joueur (String name,String color,String [][] plateau,int[][]plateau2,boolean isHuman) {
+	public Joueur (String name,String color,String [][] plateauType,int[][]plateauCouronne,boolean isHuman) {
 		this.name=name;
 		this.color=color;
-		this.plateau=plateau;
-		this.plateau2=plateau2;
+		this.plateauType=plateauType;
+		this.plateauCouronne=plateauCouronne;
 		this.isHuman=isHuman;
 	}
 
@@ -33,20 +33,20 @@ public class Joueur {
 		this.color = color;
 	}
 	
-	public String[][] getPlateau() {
-		return plateau;
+	public String[][] getPlateauType() {
+		return plateauType;
 	}
 
-	public void setPlateau(String[][] plateau) {
-		this.plateau = plateau;
+	public void setPlateauType(String[][] plateauType) {
+		this.plateauType = plateauType;
 	}
 
-	public int[][] getPlateau2() {
-		return plateau2;
+	public int[][] getPlateauCouronne() {
+		return plateauCouronne;
 	}
 
-	public void setPlateau2(int[][] plateau2) {
-		this.plateau2 = plateau2;
+	public void setPlateauCouronne(int[][] plateau2) {
+		this.plateauCouronne = plateauCouronne;
 	}
 	
 	public boolean isHuman() {
@@ -57,25 +57,29 @@ public class Joueur {
 		this.isHuman = isHuman;
 	}
 
-	public void afficherPlateau(String[][]plateau,int[][]plateau2) {
-		for(int i=0;i<12;i++) {
-			for(int k=0;k<12;k++) {
-				String ecriture="";
-				if(plateau[i][k]!=null) {
-					ecriture=plateau[i][k]+":"+plateau2[i][k];
+	public void afficherPlateau(String[][]plateauType,int[][]plateauCouronne) {
+		for(int i=0;i<11;i++) {
+			for(int k=0;k<11;k++) {
+				String ecriture=""; //Création d'une variable écriture permettant de ranvoyer un tableau propre
+				if(plateauType[i][k]!=null) {
+					ecriture=plateauType[i][k]+":"+plateauCouronne[i][k]; //Affichage des deux tableaux
 				}
 				else {
-					ecriture="null"+":"+plateau2[i][k];
+					ecriture="null";
 				}
 				while(ecriture.length()<11) {
-					ecriture=ecriture+" ";
+					ecriture=ecriture+" "; // Creéation d'espace pour un alignement propre au niveau du tableau
 				}
 				System.out.print(ecriture);
 			}
 			System.out.println();
 		}
 	}
-	public void placage(String[][] matrice,ArrayList<Domino> listeDominoSortie,int[][]matrice2) {
+	public void placement(String[][] plateauType,ArrayList<Domino> listeDominoSortie,int[][]plateauCouronne) {
+		/*
+		 *  Les 12 prochaines lignes semblent inutiles; cependant sans elles on ne peut pas déterminer pour un tableau si un type est égal à un autre
+		 *  Nous avons donc décider de faire intervenir equals (qu'on ne peut utiliser pour un tableau avec des null) dans cette partie pour réécrire la valeur du type 1 et 2
+		 */
 		ArrayList<String> listeType=new ArrayList<>(Arrays.asList("Mer","Foret","Prairie","Montagne","Champs","Mine"));
 		String type1="";
 		for(int i=0;i<6;i++) {
@@ -91,36 +95,15 @@ public class Joueur {
 		}
 		int nbrCour1=listeDominoSortie.get(0).getNbrCouronne1();
 		int nbrCour2=listeDominoSortie.get(0).getNbrCouronne2();
-		ArrayList<int[]> liste = new ArrayList<>();
-		ArrayList<Integer> liste1 = new ArrayList<>();
-		ArrayList<ArrayList> listeCasePrise = new ArrayList<>();
-		for(int k=0;k<matrice.length;k++) {
-			for(int j=0;j<matrice[0].length;j++) {
-				if(matrice[k][j]!=null) {
-					int[] couple= new int[2];
-					couple[0]=k;
-					couple[1]=j;
-					liste.add(couple);
-					liste1.add(j);
-				}
-			}
-		}
-		for(int i=0;i<liste.size();i++) {
-			ArrayList<Integer> listeCouple = new ArrayList<>();
-			listeCouple.add(liste.get(i)[0]);
-			listeCouple.add(liste.get(i)[1]);
-			listeCasePrise.add(listeCouple);
-		}
 		
-		System.out.println(listeCasePrise);
 		ArrayList<ArrayList> listeCoupPossible = new ArrayList<>();
-		System.out.println("vertical ou horizontal ?");
+		System.out.println("vertical ou horizontal ?"); //on demande à l'utilisateur l'orientation du domino qu'il veut poser
 		Scanner scanner=new Scanner(System.in);
 		String chaine=scanner.nextLine();
 		if(chaine.equals("v")) {
 			System.out.println("Voulez-vous inversez le domino ?(oui ou non)");
 			String chaineInversement=scanner.nextLine();
-			if(chaineInversement.contentEquals("oui")){
+			if(chaineInversement.equals("oui")){ // on inverse les dominos si le joueur le souhaite
 				String chaineAnnexe=type1;
 				type1=type2;
 				type2=chaineAnnexe;
@@ -128,61 +111,56 @@ public class Joueur {
 				nbrCour1=nbrCour2;
 				nbrCour2=intAnnexe;
 			}
-			System.out.println(type1);
-			for(int u=2;u<10;u++) {
+			for(int u=1;u<9;u++) { //Pour chaque position de la matrice on regarde si un coup est possible
 				for(int m=1;m<10;m++) {
 					ArrayList<Integer> listeCoupPossible1 = new ArrayList<>();
-					if(coupPossible(matrice,u,m,chaine,type1,type2)) {
+					if(coupPossible(plateauType,u,m,chaine,type1,type2)) { // La fonction coupPossible regarde si on peut jouer à catte position le domino
 						listeCoupPossible1.add(u);
 						listeCoupPossible1.add(m);
-						listeCoupPossible.add(listeCoupPossible1);
+						listeCoupPossible.add(listeCoupPossible1); // on ajoute le coup à la liste des coups possibles
 						
 					}
 				}
 			}
-			System.out.println(listeCoupPossible);
-			if(listeCoupPossible.size()==0) {
+			System.out.println(listeCoupPossible); // on affiche cette liste pour l'utilisateur
+			if(listeCoupPossible.size()==0) { // Si il n'y a pas de cou possible on fait les lignes suivantes
 				System.out.println("Pas de coup jouable");
-				System.out.println("coucou");
 				String chaine3=scanner.nextLine();
-				if(chaine3.equals("oui")) {
-					placage(matrice, listeDominoSortie,matrice2);
+				if(chaine3.equals("oui")) { // on donne une possibilité à l'utilisateur de changer son coup
+					placement(plateauType, listeDominoSortie,plateauCouronne);
 				}
 				
 			}
-			else {
+			else { // on a au moins un coup possible
 				ArrayList<Integer> listeCouple2 = new ArrayList<>();
 				ArrayList<Integer> listeCouple3 = new ArrayList<>();
 				System.out.println("Entrez oui si vous voulez changer la position du domino ou entrez la première coordonnée");
-				String chaine2=scanner.nextLine();
+				String chaine2=scanner.nextLine(); // de même que dans le cas précédent, on laiise la possibilité de se rétracter
 				if(chaine2.equals("oui")) {
-					placage(matrice, listeDominoSortie,matrice2);
-					return;
+					placement(plateauType, listeDominoSortie,plateauCouronne);
+					return; // on sort de la fonction pour qu'elle n'y revienne pas après
 				}
-				int n=Integer.parseInt(chaine2);
+				int n=Integer.parseInt(chaine2); // on transforme les autres valeurs que oui en integer
+				System.out.println("Entrez une deuxième coordonnée");
 				int m=scanner.nextInt();
 				listeCouple2.add(n);
 				listeCouple2.add(m);
-				listeCouple3.add(n+1);
-				listeCouple3.add(m);
 				System.out.println(listeCouple2);
-				System.out.println(listeCouple3);
 				if( listeCoupPossible.contains(listeCouple2)) {
 					System.out.println("Coup validé");
-					listeCasePrise.add(listeCouple2);
-					matrice[n][m]=type1;
-					matrice[n+1][m]=type2;
-					matrice2[n][m]=nbrCour1;
-					matrice2[n+1][m]=nbrCour2;
+					plateauType[n][m]=type1;
+					plateauType[n+1][m]=type2;
+					plateauCouronne[n][m]=nbrCour1;
+					plateauCouronne[n+1][m]=nbrCour2; // on ajoute toutes les informations à la matrice
 				}
 				else {
 					System.out.println("erreur");
-					placage(matrice, listeDominoSortie,matrice2);
+					placement(plateauType, listeDominoSortie,plateauCouronne);
 				}
 			}
 			
 		}
-		if(chaine.equals("h")) {
+		if(chaine.equals("h")) { //on fait de même avec l'horizontal qu'avec le vertical
 			System.out.println("Voulez-vous inversez le domino ?(oui ou non)");
 			String chaineInversement=scanner.nextLine();
 			if(chaineInversement.equals("oui")){
@@ -194,10 +172,10 @@ public class Joueur {
 				nbrCour2=intAnnexe;
 			}
 			for(int u=1;u<10;u++) {
-				for(int m=1;m<10;m++) {
+				for(int m=1;m<9;m++) {
 					ArrayList<Integer> listeCoupPossible1 = new ArrayList<>();
 					
-					if(coupPossible(matrice,u,m,chaine,type1,type2)) {
+					if(coupPossible(plateauType,u,m,chaine,type1,type2)) {
 						listeCoupPossible1.add(u);
 						listeCoupPossible1.add(m);
 						listeCoupPossible.add(listeCoupPossible1);
@@ -211,7 +189,7 @@ public class Joueur {
 				System.out.println("coucou");
 				String chaine3=scanner.nextLine();
 				if(chaine3.equals("oui")) {
-					placage(matrice, listeDominoSortie,matrice2);
+					placement(plateauType, listeDominoSortie,plateauCouronne);
 				}
 				
 			}
@@ -221,7 +199,7 @@ public class Joueur {
 				System.out.println("Entrez oui si vous voulez changer la position du domino ou entrez la première coordonnée");
 				String chaine2=scanner.nextLine();
 				if(chaine2.equals("oui")) {
-					placage(matrice, listeDominoSortie,matrice2);
+					placement(plateauType, listeDominoSortie,plateauCouronne);
 					return;
 				}
 				int n=Integer.parseInt(chaine2);
@@ -235,64 +213,62 @@ public class Joueur {
 				
 				if( listeCoupPossible.contains(listeCouple2)) {
 					System.out.println("Coup validé");
-					listeCasePrise.add(listeCouple2);
-					matrice[n][m]=type1;
-					matrice[n][m+1]=type2;
-					matrice2[n][m]=nbrCour1;
-					matrice2[n][m+1]=nbrCour2;
+					plateauType[n][m]=type1;
+					plateauType[n][m+1]=type2;
+					plateauCouronne[n][m]=nbrCour1;
+					plateauCouronne[n][m+1]=nbrCour2;
 				}
 				else {
 					System.out.println("erreur");
-					placage(matrice, listeDominoSortie,matrice2);
+					placement(plateauType, listeDominoSortie,plateauCouronne);
 				}
 			}
 			
 		}
 		
-		System.out.println(listeCasePrise);
-		afficherPlateau(matrice,matrice2);
+		afficherPlateau(plateauType,plateauCouronne); // on affiche le nouveau plateau
 			
 	}
-	public boolean coupPossible(String[][]matrice,int u,int m,String v,String type1,String type2) {
+	public boolean coupPossible(String[][]plateauType,int u,int m,String v,String type1,String type2) {
 		if(v.equals("v")) {
 			boolean flag=true;
-			if(matrice[u][m]!=null || matrice[u+1][m]!=null) {
-				return false;
+			if(plateauType[u][m]!=null || plateauType[u+1][m]!=null) {
+				return false; // on teste si les cases ne sont pas déjà prises
 			}
 			
-			else if(test(matrice,u,m,flag)){
-				return false;
+			else if(plusGrandQue5x5(plateauType,u,m,flag)){
+				return false; //on teste si on est audelà de 5x5
 			}
-			/*else if(toucherNon(matrice,u,m,type1) || toucherNon(matrice,u+1,m,type2)) {
+			/*else if(toucherNon(plateauType,u,m,type1) || toucherNon(matrice,u+1,m,type2)) {
 				return false;
 			}*/
 			else {
-				boolean a=toucher(matrice,u,m,type1);
-				boolean b=toucher(matrice,u+1,m,type2);
-				return (a||b);
+				boolean a=toucher(plateauType,u,m,type1);
+				boolean b=toucher(plateauType,u+1,m,type2);
+				return (a||b); // on regarde si l'un ou l'autre touche un domino du même type que lui
 			}
 		}
-		else {
+		else { //on fait de même que pour le vertical
 			boolean flag=false;
-			if(matrice[u][m]!=null || matrice[u][m+1]!=null) {
+			if(plateauType[u][m]!=null || plateauType[u][m+1]!=null) {
 				return false;
 			}
-			else if(test(matrice,u,m,flag)){
+			else if(plusGrandQue5x5(plateauType,u,m,flag)){
 				return false;
 			}
 			/*else if(toucherNon(matrice,u,m,type1) || toucherNon(matrice,u,m+1,type2)) {
 				return false;
 			}*/
 			else {
-				boolean a=toucher(matrice,u,m,type1);
-				boolean b=toucher(matrice,u,m+1,type2);
+				boolean a=toucher(plateauType,u,m,type1);
+				boolean b=toucher(plateauType,u,m+1,type2);
 				return (a||b);
 			}
 		}
 		
 	}
-	public boolean toucher(String[][]matrice,int u,int m,String type) {
-		if(matrice[u+1][m]==type || matrice[u-1][m]==type || matrice[u][m+1]==type || matrice[u][m-1]==(type) || matrice[u+1][m]=="Chateau" || matrice[u-1][m]=="Chateau" || matrice[u][m+1]=="Chateau" || matrice[u][m-1]==("Chateau")) {
+	public boolean toucher(String[][]plateauType,int u,int m,String type) { //fonction qui teste si un domino touvhe au moins un autre du même type que lui
+		if(plateauType[u+1][m]==type || plateauType[u-1][m]==type || plateauType[u][m+1]==type || plateauType[u][m-1]==(type) || plateauType[u+1][m]=="Chateau" || plateauType[u-1][m]=="Chateau" || plateauType[u][m+1]=="Chateau" || plateauType[u][m-1]==("Chateau")) { // on teste pour à gauche, à droite, en bas et en haut
 			return true;
 		}
 		else {
@@ -300,114 +276,117 @@ public class Joueur {
 		}
 		
 	}
-	public static boolean test(String[][]matrice,int u,int m,boolean flag) {
+	public static boolean plusGrandQue5x5(String[][]plateauType,int u,int m,boolean flag) { //fonction qui teste si on dépasse la limite de 5x5
 		if(flag) {
-			matrice[u][m]="coucou";
-			matrice[u+1][m]="coucou";
-			int compteur=0;
-			for(int i=0;i<12;i++) {
-				for(int k=0;k<12;k++) {
-					if(matrice[i][k]!=null) {
+			plateauType[u][m]="coucou";
+			plateauType[u+1][m]="coucou"; //on met des valeurs au deux coordonnées
+			int compteur=0; // on initialise un compteur pour connaître la taille
+			for(int i=0;i<11;i++) {
+				for(int k=0;k<11;k++) {
+					if(plateauType[i][k]!=null) {
 						compteur++;
-						break;
+						break; //a cahque fois q'on en voit un sur une ligne on passe directement à la suivante
 					}
 				}
-				if(compteur>=6) {
-					matrice[u][m]=null;
-					matrice[u+1][m]=null;
+				if(compteur>=6) {// si c'est plus grand que 6 on le met en erreur
+					plateauType[u][m]=null;
+					plateauType[u+1][m]=null;
 					return true;
 				
 				}
 			}
 			compteur=0;
-			for(int i=0;i<12;i++) {
-				for(int k=0;k<12;k++) {
-					if(matrice[k][i]!=null) {
+			for(int i=0;i<11;i++) {
+				for(int k=0;k<11;k++) {
+					if(plateauType[k][i]!=null) {
 						compteur++;
-						break;
+						break;//on fait de même avec les colonnes
 					}
 				}
 				if(compteur>=6) {
-					matrice[u][m]=null;
-					matrice[u+1][m]=null;
+					plateauType[u][m]=null;
+					plateauType[u+1][m]=null;
 					return true;
 				
 				}
 			}
-			matrice[u][m]=null;
-			matrice[u+1][m]=null;
-			return false;
+			plateauType[u][m]=null;
+			plateauType[u+1][m]=null;
+			return false; // si aucune des conditions n'est validé on return false
 		}
-		else {
-			matrice[u][m]="coucou";
-			matrice[u][m+1]="coucou";
+		else { // on fait la même chose pour un placement horizontal
+			plateauType[u][m]="coucou";
+			plateauType[u][m+1]="coucou";
 			int compteur=0;
-			for(int i=0;i<12;i++) {
-				for(int k=0;k<12;k++) {
-					if(matrice[k][i]!=null) {
+			for(int i=0;i<11;i++) {
+				for(int k=0;k<11;k++) {
+					if(plateauType[k][i]!=null) {
 						compteur++;
 						break;
 					}
 				}
 				if(compteur>=6) {
-					matrice[u][m]=null;
-					matrice[u][m+1]=null;
+					plateauType[u][m]=null;
+					plateauType[u][m+1]=null;
 					return true;
 				
 				}
 			}
 			compteur=0;
-			for(int i=0;i<12;i++) {
-				for(int k=0;k<12;k++) {
-					if(matrice[i][k]!=null) {
+			for(int i=0;i<11;i++) {
+				for(int k=0;k<11;k++) {
+					if(plateauType[i][k]!=null) {
 						compteur++;
 						break;
 					}
 				}
 				if(compteur>=6) {
-					matrice[u][m]=null;
-					matrice[u][m+1]=null;
+					plateauType[u][m]=null;
+					plateauType[u][m+1]=null;
 					return true;
 				
 				}
 			}
-			matrice[u][m]=null;
-			matrice[u][m+1]=null;
+			plateauType[u][m]=null;
+			plateauType[u][m+1]=null;
 			return false;
 		}
 	}
-	public void test() {
-		System.out.println("coucou");
-	}
-	public boolean toucherNon(String[][]matrice,int u, int m, String type) {
-		if((matrice[u+1][m]!=type && matrice[u+1][m]!=null && matrice[u+1][m]!="Chateau") || (matrice[u-1][m]!=type && matrice[u-1][m]!=null && matrice[u-1][m]!="Chateau") || (matrice[u][m+1]!=type && matrice[u][m+1]!=null && matrice[u][m+1]!="Chateau") || (matrice[u][m-1]!=type && matrice[u][m-1]!=null && matrice[u][m-1]!="Chateau")) {
+	
+	public boolean toucherNon(String[][]plateauType,int u, int m, String type) { // fonction pour une potentiel utilisation annexe
+		if((plateauType[u+1][m]!=type && plateauType[u+1][m]!=null && plateauType[u+1][m]!="Chateau") || (plateauType[u-1][m]!=type && plateauType[u-1][m]!=null && plateauType[u-1][m]!="Chateau") || (plateauType[u][m+1]!=type && plateauType[u][m+1]!=null && plateauType[u][m+1]!="Chateau") || (plateauType[u][m-1]!=type && plateauType[u][m-1]!=null && plateauType[u][m-1]!="Chateau")) {
 			return true;
 		}
 		else {
 			return false;
 		}
 	}
-	public ArrayList<ArrayList<Integer>> toucher2(String[][]matrice,String type,ArrayList<ArrayList<Integer>> listeCaseLie,int iterator) {
-		ArrayList<Integer> couple = listeCaseLie.get(iterator);
-		if(matrice[couple.get(0)+1][couple.get(1)]==type && matrice[couple.get(0)+1][couple.get(1)]!=null) {
+	
+	public ArrayList<ArrayList<Integer>> toucherPourComptage(String[][]plateauType,String type,ArrayList<ArrayList<Integer>> listeCaseLie,int iterator) { //fonction qui permet de savoir si un domino touche un du meme type
+		ArrayList<Integer> couple = listeCaseLie.get(iterator); // On engendre un couple à partir de listeCaseLie
+		/*
+		 * Dans cette fonction on va regarder dans chaque direction si un domino touche un domino du même type
+		 * Si oui, on va tester si cette position a déjà été compté, si non, on l'ajoute à listeCaseLie
+		 */
+		if(plateauType[couple.get(0)+1][couple.get(1)]==type && plateauType[couple.get(0)+1][couple.get(1)]!=null) {
 			ArrayList<Integer> couple1=new ArrayList<>(Arrays.asList(couple.get(0)+1, couple.get(1)));
 			if(!listeCaseLie.contains(couple1)){
 				listeCaseLie.add(couple1);
 			}
 		}
-		if(matrice[couple.get(0)-1][couple.get(1)]==type && matrice[couple.get(0)-1][couple.get(1)]!=null) {
+		if(plateauType[couple.get(0)-1][couple.get(1)]==type && plateauType[couple.get(0)-1][couple.get(1)]!=null) {
 			ArrayList<Integer> couple1=new ArrayList<>(Arrays.asList(couple.get(0)-1, couple.get(1)));
 			if(!listeCaseLie.contains(couple1)){
 				listeCaseLie.add(couple1);
 			}
 		}
-		if(matrice[couple.get(0)][couple.get(1)+1]==type && matrice[couple.get(0)][couple.get(1)+1]!=null) {
+		if(plateauType[couple.get(0)][couple.get(1)+1]==type && plateauType[couple.get(0)][couple.get(1)+1]!=null) {
 			ArrayList<Integer> couple1=new ArrayList<>(Arrays.asList(couple.get(0), couple.get(1)+1));
 			if(!listeCaseLie.contains(couple1)){
 				listeCaseLie.add(couple1);
 			}
 		}
-		if(matrice[couple.get(0)][couple.get(1)-1]==type && matrice[couple.get(0)][couple.get(1)-1]!=null) {
+		if(plateauType[couple.get(0)][couple.get(1)-1]==type && plateauType[couple.get(0)][couple.get(1)-1]!=null) {
 			ArrayList<Integer> couple1=new ArrayList<>(Arrays.asList(couple.get(0), couple.get(1)-1));
 			if(!listeCaseLie.contains(couple1)){
 				listeCaseLie.add(couple1);
@@ -415,29 +394,27 @@ public class Joueur {
 		}
 		return listeCaseLie;
 	}
-	public int comptagePoints(String[][]matrice, int[][]matrice2) {
+	public int comptagePoints(String[][]plateauType, int[][]plateauCouronne) { // fonction qui calcule les points pour 1 joueur
 		int points=0;
-		ArrayList<ArrayList> listeCaseCompte= new ArrayList<>();
+		ArrayList<ArrayList> listeCaseCompte= new ArrayList<>(); // cette liste contient toutes les cases qu'ona compté qu'importe leur type
 		for(int i=1;i<10;i++) {
 			for(int k=1;k<10;k++) {
 				ArrayList<Integer> couple = new ArrayList<>();
-				couple.add(i);
-				couple.add(k);
-				if(!listeCaseCompte.contains(couple)) {
-					String type=matrice[i][k];
-					ArrayList<ArrayList<Integer>> listeCaseLie =new ArrayList<>();
-					listeCaseLie.add(couple);
-					int iterateur=0;
-					while(iterateur!=listeCaseLie.size()) {
-						listeCaseLie=toucher2(matrice,type,listeCaseLie,iterateur);
-						iterateur++;
+				couple.add(i);//bou
+				couple.add(k);// pour chaque case de la matrice on crée un couple
+				if(!listeCaseCompte.contains(couple)) {// on regarde si on a déjà compté cette case
+					String type=plateauType[i][k]; //on regarde son type
+					ArrayList<ArrayList<Integer>> listeCaseLie =new ArrayList<>(); //on instaure une liste qui notera toutes les cases du même type qui sont liés
+					listeCaseLie.add(couple);// on ajoute le couple
+					for(int iterateur=0;iterateur!=listeCaseLie.size();iterateur++) { //L'iterateur va alors regarder chaque couple de la liste! Attention la condition de fin varie; cependant, elle s'arrête dans tous les cas
+						listeCaseLie=toucherPourComptage(plateauType,type,listeCaseLie,iterateur); //on regarde si des cases touchent celle ci
 					}
 					int nbrCouronne=0;
 					for(int m=0;m<listeCaseLie.size();m++) {
-						nbrCouronne=nbrCouronne+matrice2[listeCaseLie.get(m).get(0)][listeCaseLie.get(m).get(1)];
+						nbrCouronne=nbrCouronne+plateauCouronne[listeCaseLie.get(m).get(0)][listeCaseLie.get(m).get(1)]; // on compte ensuite toutes les couronnes du royaume de type créer
 					}
 					points=points+listeCaseLie.size()*nbrCouronne;
-					listeCaseCompte.addAll(listeCaseLie);
+					listeCaseCompte.addAll(listeCaseLie);// on ajoute toutes les cases de listeCaseLie à listeCaseCompte
 				}
 				
 			}
@@ -445,17 +422,7 @@ public class Joueur {
 		return points;
 	}
 	
-	public void inversementDomino(String type1, String type2, int nbrCour1, int nbrCour2) {
-		String chaineAnnexe=type1;
-		type1=type2;
-		type2=chaineAnnexe;
-		int intAnnexe=nbrCour1;
-		nbrCour1=nbrCour2;
-		nbrCour2=intAnnexe;
-		
-	}
-	
-	public void placageIA(String[][] matrice,ArrayList<Domino> listeDominoSortie,int[][]matrice2) {
+	public void placementIA(String[][] plateauType,ArrayList<Domino> listeDominoSortie,int[][]plateauCouronne) {
 		ArrayList<String> listeType=new ArrayList<>(Arrays.asList("Mer","Foret","Prairie","Montagne","Champs","Mine"));
 		String type1="";
 		for(int i=0;i<6;i++) {
@@ -475,13 +442,12 @@ public class Joueur {
 		int coord1Max=0;
 		int coord2Max=0;
 		int coord3Max=0;
-		int coord4Max=0;
+		int coord4Max=0; //on initialise toutes les coordonnées permettant de connaître les valeurs pour les points max
 		String chaine="h";
-		for(int i=0;i<2;i++) {
+		for(int i=0;i<2;i++) { //on essaie pour horizontal puis vertical
 			String chaineInversement="oui";
-			for(int k=0;k<2;k++) {
+			for(int k=0;k<2;k++) { //on essaie avec et sans inversement du domino
 				if(chaine.equals("h")) {
-					System.out.println("coucou");
 					if(chaineInversement.equals("oui")){
 						String chaineAnnexe=type1;
 						type1=type2;
@@ -490,12 +456,13 @@ public class Joueur {
 						nbrCour1=nbrCour2;
 						nbrCour2=intAnnexe;
 					}
+					// on fait quasiment la même chos que pour un être humain
 					ArrayList<ArrayList> listeCoupPossible = new ArrayList<>();
 					for(int u=1;u<10;u++) {
-						for(int m=1;m<10;m++) {
+						for(int m=1;m<9;m++) {
 							ArrayList<Integer> listeCoupPossible1 = new ArrayList<>();
 							
-							if(coupPossible(matrice,u,m,chaine,type1,type2)) {
+							if(coupPossible(plateauType,u,m,chaine,type1,type2)) {
 								listeCoupPossible1.add(u);
 								listeCoupPossible1.add(m);
 								listeCoupPossible.add(listeCoupPossible1);
@@ -504,15 +471,19 @@ public class Joueur {
 						}
 					}
 					if(listeCoupPossible.size()==0) {
-						return;
+						return; // si aucun coup possible on jette le domino
 					}
 					for(int iterator=0;iterator<listeCoupPossible.size();iterator++) {
-						String[][]matriceCopie=new String[12][12];
-						int[][]matrice2Copie=new int[12][12];
-						for(int u=0;u<12;u++) {
-							for(int m=0;m<12;m++) {
-								matriceCopie[u][m]=matrice[u][m];
-								matrice2Copie[u][m]=matrice2[u][m];
+						/*
+						 * Pour chaque position, on va calculer le nombre de points qu'elle rapporte
+						 * et on va sauvegarder la position de celui qui rapporte le plus de points
+						 */
+						String[][]matriceCopie=new String[11][11];
+						int[][]matrice2Copie=new int[11][11]; // on copie la matrice pour ne pas la modifier
+						for(int u=0;u<11;u++) {
+							for(int m=0;m<11;m++) {
+								matriceCopie[u][m]=plateauType[u][m];
+								matrice2Copie[u][m]=plateauCouronne[u][m];
 							}
 						}
 						ArrayList<Integer> couple = listeCoupPossible.get(0);
@@ -530,7 +501,7 @@ public class Joueur {
 						}
 					}
 				}
-				if(chaine.equals("v")) {
+				if(chaine.equals("v")) { // on fait de même que pour le cas horizontal
 					if(chaineInversement.equals("oui")){
 						String chaineAnnexe=type1;
 						type1=type2;
@@ -540,11 +511,11 @@ public class Joueur {
 						nbrCour2=intAnnexe;
 					}
 					ArrayList<ArrayList> listeCoupPossible = new ArrayList<>();
-					for(int u=1;u<10;u++) {
+					for(int u=1;u<9;u++) {
 						for(int m=1;m<10;m++) {
 							ArrayList<Integer> listeCoupPossible1 = new ArrayList<>();
 							
-							if(coupPossible(matrice,u,m,chaine,type1,type2)) {
+							if(coupPossible(plateauType,u,m,chaine,type1,type2)) {
 								listeCoupPossible1.add(u);
 								listeCoupPossible1.add(m);
 								listeCoupPossible.add(listeCoupPossible1);
@@ -556,12 +527,12 @@ public class Joueur {
 						return;
 					}
 					for(int iterator=0;iterator<listeCoupPossible.size();iterator++) {
-						String[][]matriceCopie=new String[12][12];
-						int[][]matrice2Copie=new int[12][12];
-						for(int u=0;u<12;u++) {
-							for(int m=0;m<12;m++) {
-								matriceCopie[u][m]=matrice[u][m];
-								matrice2Copie[u][m]=matrice2[u][m];
+						String[][]matriceCopie=new String[11][11];
+						int[][]matrice2Copie=new int[11][11];
+						for(int u=0;u<11;u++) {
+							for(int m=0;m<11;m++) {
+								matriceCopie[u][m]=plateauType[u][m];
+								matrice2Copie[u][m]=plateauCouronne[u][m];
 							}
 						}
 						ArrayList<Integer> couple = listeCoupPossible.get(0);
@@ -583,10 +554,11 @@ public class Joueur {
 			}
 			chaine="v";
 		}
-		matrice[coord1Max][coord2Max]=type1;
-		matrice[coord3Max][coord4Max]=type2;
-		matrice2[coord1Max][coord2Max]=nbrCour1;
-		matrice2[coord3Max][coord4Max]=nbrCour2;
+		plateauType[coord1Max][coord2Max]=type1;
+		plateauType[coord3Max][coord4Max]=type2;
+		plateauCouronne[coord1Max][coord2Max]=nbrCour1;
+		plateauCouronne[coord3Max][coord4Max]=nbrCour2; // on ajoute les coordonnées du domino qui rapporte le plus de points
 	}
 	
 }
+
