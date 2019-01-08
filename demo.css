@@ -1,0 +1,21 @@
+
+
+.scene {
+    fx-background-image url("wal.png");
+    fx-background-color:#F0E68C;
+}
+
+@font-face {
+    font-family: coolFont;
+    src: url('font.ttf');
+}
+
+Button:hover {
+    -fx-background-color: #c9a650;
+    -fx-scale-y: 1.3;
+    -fx-scale-x: 1.3;
+}
+
+Button:pressed {
+    -fx-background-radius: 30;
+}

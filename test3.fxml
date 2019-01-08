@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@demo.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="menuDom.Controller">
+   <children>
+      <AnchorPane prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <ImageView fitHeight="400.0" fitWidth="606.0" layoutX="34.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../Downloads/scroll.jpg" />
+               </image>
+            </ImageView>
+            <Button layoutX="259.0" layoutY="251.0" mnemonicParsing="false" onAction="#handle" prefHeight="31.0" prefWidth="83.0" text="Valider">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <TextField fx:id="name" layoutX="207.0" layoutY="44.0" prefHeight="31.0" prefWidth="187.0" promptText="Nom du joueur">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </TextField>
+            <ComboBox fx:id="color" layoutX="226.0" layoutY="146.0" prefWidth="150.0" promptText="Choisir couleur" value="Jaune"><items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:id="Jaune" fx:value="Jaune" />
+<String fx:id="Rose" fx:value="Rose" />
+
+                    <String fx:id="Vert" fx:value="Vert" />
+                </FXCollections>
+            </items></ComboBox>
+            <CheckBox fx:id="check" layoutX="259.0" layoutY="101.0" mnemonicParsing="false" text="IA ?">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </CheckBox>
+            <Label fx:id="warn" layoutX="214.0" layoutY="14.0" opacity="0.0" prefHeight="25.0" prefWidth="136.0" text="Entrer nom valide" textFill="#c30f0f">
+               <font>
+                  <Font name="System Bold" size="16.0" />
+               </font>
+            </Label>
+            <Button fx:id="back" onAction="#handleBack" layoutX="96.0" layoutY="347.0" mnemonicParsing="false" text="Retour">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Button> </children>
+      </AnchorPane>
+   </children>
+</VBox>
