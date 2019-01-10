@@ -517,7 +517,7 @@ public class Joueur {
 		}
 		return listeCaseLie;
 	}
-	public int comptagePoints(String[][]plateauType, int[][]plateauCouronne) { // fonction qui calcule les points pour 1 joueur
+	public int comptagePoints(String[][]plateauType, int[][]plateauCouronne,ArrayList<Boolean> listeModeOptionnel) { // fonction qui calcule les points pour 1 joueur
 		int points=0;
 		ArrayList<ArrayList> listeCaseCompte= new ArrayList<>(); // cette liste contient toutes les cases qu'ona compté qu'importe leur type
 		for(int i=1;i<10;i++) {
@@ -542,10 +542,40 @@ public class Joueur {
 				
 			}
 		}
+		if(listeModeOptionnel.get(0)) {
+			if(plateauType[3][3]!=null) {
+				if(plateauType[7][7]!=null && plateauType[3][7]!=null && plateauType[7][3]!=null) {
+					points=points+10;
+				}
+			}
+			if(plateauType[4][4]!=null) {
+				if(plateauType[6][6]!=null && plateauType[4][6]!=null && plateauType[6][4]!=null) {
+					points=points+10;
+				}
+			}
+		}
+		if(listeModeOptionnel.get(1)) {
+			for(int i=0;i<11;i++) {
+				for(int k=0;k<11;k++) {
+					if(plateauType[i][k]!=null) {
+						for(int j=0;j<5;j++) {
+							for(int l=0;l<5;l++) {
+								if(plateauType[i+j][k+l]==null) {
+									return points;
+								}
+							}
+						}
+						return points+5;
+					}
+				}
+			}
+			
+		}
+		return points;
 		return points;
 	}
 	
-	public void placementIA(String[][] plateauType,ArrayList<Domino> listeDominoSortie,int[][]plateauCouronne) {
+	public void placementIA(String[][] plateauType,ArrayList<Domino> listeDominoSortie,int[][]plateauCouronne,ArrayList<Boolean> listeModeOptionnel) {
 		ArrayList<String> listeType=new ArrayList<>(Arrays.asList("Mer","Foret","Prairie","Montagne","Champs","Mine"));
 		String type1="";
 		for(int i=0;i<6;i++) {
@@ -614,7 +644,7 @@ public class Joueur {
 						matriceCopie[couple.get(0)][couple.get(1)+1]=type2;
 						matrice2Copie[couple.get(0)][couple.get(1)]=nbrCour1;
 						matrice2Copie[couple.get(0)][couple.get(1)+1]=nbrCour2;
-						int points=comptagePoints(matriceCopie,matrice2Copie);
+						int points=comptagePoints(matriceCopie,matrice2Copie,listeModeOptionnel);
 						if(pointsMax<=points) {
 							pointsMax=points;
 							coord1Max=couple.get(0);
@@ -663,7 +693,7 @@ public class Joueur {
 						matriceCopie[couple.get(0)+1][couple.get(1)]=type2;
 						matrice2Copie[couple.get(0)][couple.get(1)]=nbrCour1;
 						matrice2Copie[couple.get(0)+1][couple.get(1)]=nbrCour2;
-						int points=comptagePoints(matriceCopie,matrice2Copie);
+						int points=comptagePoints(matriceCopie,matrice2Copie,listeModeOptionnel);
 						if(pointsMax<=points) {
 							pointsMax=points;
 							coord1Max=couple.get(0);
