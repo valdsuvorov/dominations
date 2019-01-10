@@ -9,9 +9,24 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Scanner;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 public class Game {
 	int nbrJoueur;
 	ArrayList<Domino> listeDomino;
+	
+		
+	Color DARK_GREEN = new Color(0,100,0);
+	Color BROWN = new Color(139,69,19);
+	String[]plateauTypeN= {null,null};
+	int[]plateauCouronneN= {0,0};
 	
 	public Game(int nbrJoueur, ArrayList<Domino> listeDomino) {
 		this.nbrJoueur=nbrJoueur;
@@ -135,6 +150,111 @@ public class Game {
 		}
 		return listeDominoTirageTrie;
 	}
+	
+	public void afficherDominoJoueur(String DominoType1,String DominoType2, int DominoNbrCour1, int DominoNbrCour2 ) {  // je crÃ©e une fonction qui ajoute un seul demi domino avec les valeurs de position, de type et le nombre de couronnes
+    	JFrame frame =new JFrame("Domino"); 
+	    JPanel panel = new JPanel(new GridLayout(0,2));
+	    String valeur="";
+	    plateauTypeN[0]=DominoType1;
+	    plateauTypeN[1]=DominoType2;
+	    plateauCouronneN[0]=DominoNbrCour1;
+	    plateauCouronneN[1]=DominoNbrCour2;
+	        for( int j=0; j<2; j++) {
+	            valeur = plateauTypeN[j] + ":" + plateauCouronneN[j];
+	            JPanel affichePlateau = new JPanel();
+	            affichePlateau.setPreferredSize(new Dimension(100,100));
+	            affichePlateau.setLayout(new GridBagLayout());
+	            affichePlateau.setBorder(BorderFactory.createLineBorder(Color.black));
+	            
+	            switch (valeur) { 
+	            case "Champs:0" :
+	            	affichePlateau.setBackground(Color.YELLOW); 
+	            	break;
+	            case "Champs:1" :
+	            	affichePlateau.setBackground(Color.YELLOW);  
+	            	affichePlateau.add(new JLabel("1"));
+	            	break;
+	            case "Champs:2" :
+	            	affichePlateau.setBackground(Color.YELLOW);  
+	            	affichePlateau.add(new JLabel("2"));
+	            	break;
+	            	
+	            case "Prairie:0" :
+	            	affichePlateau.setBackground(Color.GREEN);  
+	            	break;
+	            case "Prairie:1" :
+	            	affichePlateau.setBackground(Color.GREEN);  
+	            	affichePlateau.add(new JLabel("1"));
+	            	break;
+	            case "Prairie:2" :
+	            	affichePlateau.setBackground(Color.GREEN);  
+	            	affichePlateau.add(new JLabel("2"));
+	            	break;
+	            
+	            case "Foret:0" :
+	            	affichePlateau.setBackground(DARK_GREEN);  
+	            	break;
+	            case "Foret:1" :
+	            	affichePlateau.setBackground(DARK_GREEN);  
+	            	affichePlateau.add(new JLabel("1"));
+	            	break;
+	            case "Foret:2" :
+	            	affichePlateau.setBackground(DARK_GREEN);  
+	            	affichePlateau.add(new JLabel("2"));
+	            	break;
+	            	
+	            case "Mer:0" :
+	            	affichePlateau.setBackground(Color.BLUE);  
+	            	break;
+	            case "Mer:1" :
+	            	affichePlateau.setBackground(Color.BLUE);  
+	            	affichePlateau.add(new JLabel("1"));
+	            	break;
+	            case "Mer:2" :
+	            	affichePlateau.setBackground(Color.BLUE);  
+	            	affichePlateau.add(new JLabel("2"));
+	            	break;
+	            	
+	            case "Montagne:0" :
+	            	affichePlateau.setBackground(BROWN);  
+	            	break;
+	            case "Montagne:1" :
+	            	affichePlateau.setBackground(BROWN);  
+	            	affichePlateau.add(new JLabel("1"));
+	            	break;
+	            case "Montagne:2" :
+	            	affichePlateau.setBackground(BROWN);  
+	            	affichePlateau.add(new JLabel("2"));
+	            	break;
+	            
+	            case "Mine:0" :
+	            	affichePlateau.setBackground(Color.GRAY);  
+	            	break;
+	            case "Mine:1" :
+	            	affichePlateau.setBackground(Color.GRAY);  
+	            	affichePlateau.add(new JLabel("1"));
+	            	break;
+	            case "Mine:2" :
+	            	affichePlateau.setBackground(Color.GRAY);  
+	            	affichePlateau.add(new JLabel("2"));
+	            	break;
+	            	
+	            case "null:0" :
+	            	affichePlateau.setBackground(Color.WHITE);  
+	            	break;
+	            	
+	            default: 
+	            	affichePlateau.setBackground(Color.WHITE);
+	            	break;
+	            }
+	            panel.add(affichePlateau);
+	        }
+	    frame.add(panel);  //ce ne sont que des fonctions d'affichage de l'onglet
+	    frame.pack();
+	    frame.setLocationRelativeTo(null);
+	    frame.setVisible(true);
+    }
+	
 	public ArrayList<Domino> choixDomino(ArrayList<Domino> listeDominoTirageTrie,ArrayList<Joueur> listeJoueur) {
 		ArrayList<Domino> listeDominoTirageAnnexe=new ArrayList(listeDominoTirageTrie); // on fait des copies de liste car on aura besoin d'avoir la liste de base
 		ArrayList<Joueur> listeJoueurAnnexe=new ArrayList(listeJoueur);
@@ -145,6 +265,7 @@ public class Game {
 			for(int i=0;i<listeDominoTirageTrie.size();i++) {
 				System.out.println(listeDominoTirageTrie.get(i).getNumero()+" "+listeDominoTirageTrie.get(i).getRoyaume1()+" "+listeDominoTirageTrie.get(i).getNbrCouronne1()+" "+listeDominoTirageTrie.get(i).getRoyaume2()+" "+listeDominoTirageTrie.get(i).getNbrCouronne2());
 				//on affiche tous les dominos
+				afficherDominoJoueur(listeDominoTirageTrie.get(i).getRoyaume1(),listeDominoTirageTrie.get(i).getRoyaume2(),listeDominoTirageTrie.get(i).getNbrCouronne1(), listeDominoTirageTrie.get(i).getNbrCouronne2());
 			}
 			
 			Scanner scanner = new Scanner(System.in);
