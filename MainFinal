@@ -64,15 +64,7 @@ public class Main {
 			listeJoueurPlacement.get(1).afficherMatriceDomino(listeJoueurPlacement.get(1).getPlateauType(),listeJoueurPlacement.get(1).getPlateauCouronne());
 			game.tourPlacageDomino(listeJoueurPlacement,listeDominoSortie); // On fait le tour de placement du domino
 		}
-		ArrayList<Integer> listeResultat = new ArrayList<>(); // Création d'une liste où tous les points seront stockés
-		for(int i=0;i<nbrJoueur;i++) {
-			int total=listeJoueur.get(i).comptagePoints(listeJoueur.get(i).getPlateauType(), listeJoueur.get(i).getPlateauCouronne()); // On compte les points pour chaque joueur
-			System.out.println(listeJoueur.get(i).getName());
-			System.out.println(total);
-			listeResultat.add(total); //on ajoute chaque points pour chaque joueur qui seront classé suivant la liste joueur
-		}
-		int rangVainqueur=listeResultat.indexOf(Collections.max(listeResultat)); //on analyse le rang du vainqueur
-		System.out.println(listeJoueur.get(rangVainqueur).getName()+" est le vainqueur"); //on affiche le vainqueur grace au rang déterminé précédemment
+		game.vainqueur(listeJoueur);
 	}
 
 }
