@@ -22,15 +22,21 @@ public class Main {
 		Game game=new Game(nbrJoueur,listeDomino); //Création d'un jeu
 		scanner.nextLine();
 		ArrayList<Joueur> listeJoueur=new ArrayList<>();
-		ArrayList<Boolean> listeModeOptionnel = new ArrayList<>();
+		ArrayList<Boolean> listeModeOptionnel = new ArrayList<>(); // nous avons décidé de faire une liste de booléen qui est plus simple à manier
 		System.out.println("Voulez-vous jouer en mode empire du milieu ?(true or false)");
 		boolean empire = scanner.nextBoolean();
 		if(empire) {
+			listeModeOptionnel.add(empire); // on ajoute les différents modes de jeu si l'utilisateur le veut
+		}
+		else{
 			listeModeOptionnel.add(empire);
 		}
 		System.out.println("Voulez-vous jouer en mode harmonie ?(true or false)");
 		boolean harmonie = scanner.nextBoolean();
 		if(harmonie) {
+			listeModeOptionnel.add(harmonie);
+		}
+		else{
 			listeModeOptionnel.add(harmonie);
 		}
 		for(int i=1;i<=nbrIA;i++) { // Création des IA
