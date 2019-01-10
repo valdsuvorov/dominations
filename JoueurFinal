@@ -544,34 +544,35 @@ public class Joueur {
 		}
 		if(listeModeOptionnel.get(0)) {
 			if(plateauType[3][3]!=null) {
-				if(plateauType[7][7]!=null && plateauType[3][7]!=null && plateauType[7][3]!=null) {
+				if(plateauType[7][7]!=null && plateauType[3][7]!=null && plateauType[7][3]!=null) { // comme la matrice ne peut pas excéder 5x5, on regarde si le cahteau est centé en regardant les 4 coins
 					points=points+10;
 				}
 			}
-			if(plateauType[4][4]!=null) {
-				if(plateauType[6][6]!=null && plateauType[4][6]!=null && plateauType[6][4]!=null) {
-					points=points+10;
+			else if(plateauType[3][3]==null && plateauType[7][3]==null && plateauType[3][7]==null && plateauType[7][7]==null){
+				if(plateauType[4][4]!=null) { // ici on fait de même que précédemment
+					if(plateauType[6][6]!=null && plateauType[4][6]!=null && plateauType[6][4]!=null) {
+						points=points+10;
+					}
 				}
 			}
 		}
 		if(listeModeOptionnel.get(1)) {
 			for(int i=0;i<11;i++) {
-				for(int k=0;k<11;k++) {
+				for(int k=0;k<11;k++) { // on s'arrête dès la première case non nulle
 					if(plateauType[i][k]!=null) {
-						for(int j=0;j<5;j++) {
+						for(int j=0;j<5;j++) { // on regarde ensuite le carré 5x5
 							for(int l=0;l<5;l++) {
 								if(plateauType[i+j][k+l]==null) {
-									return points;
+									return points; // dès qu'une case est nulle on retourne le nombre de points
 								}
 							}
 						}
-						return points+5;
+						return points+5; // le mode harmonie est vérifié donc on retourne le résultat +5
 					}
 				}
 			}
 			
 		}
-		return points;
 		return points;
 	}
 	
