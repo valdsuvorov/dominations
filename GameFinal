@@ -33,7 +33,9 @@ public class Game {
 	public void setListeDomino(ArrayList<Domino> listeDomino) {
 		this.listeDomino = listeDomino;
 	}
-	Random random =new Random();
+	
+	Random random =new Random(); // on fait appele à la classe random qui permet de donner un nombre aléatoire plus grand que 1 contrairement à Math.random
+	
 	public ArrayList<Domino> creationDomino(int nbrJoueur){
 		ArrayList<Domino> listeDomino =new ArrayList<>();
 		BufferedReader reader = null;
@@ -62,7 +64,7 @@ public class Game {
 		    	int nbrCouronne1= Integer.parseInt(valListSep[0]);
 		    	String royaume2= valListSep[3];
 		    	int nbrCouronne2= Integer.parseInt(valListSep[2]);
-		    	Domino domino = new Domino(numero,royaume1,nbrCouronne1,royaume2,nbrCouronne2);
+		    	Domino domino = new Domino(numero,royaume1,nbrCouronne1,royaume2,nbrCouronne2); // on crée à partir du dictionnaire les dominos avec la classe domino
 		    	listeDomino.add(domino);
 		    }
 
@@ -76,10 +78,10 @@ public class Game {
 		        e.printStackTrace();
 		    }
 		}
-		int nbrDominoEnleve=(4-nbrJoueur)*12;
+		int nbrDominoEnleve=(4-nbrJoueur)*12; 
 		
 		int nbrDomino=48;
-		while(nbrDominoEnleve!=0) {
+		while(nbrDominoEnleve!=0) { // on enlève les dominos un à un grâce à la fonction random
 			int nbrAleatoire = random.nextInt(nbrDomino);
 			listeDomino.remove(listeDomino.get(nbrAleatoire));
 			nbrDominoEnleve--;
@@ -89,32 +91,29 @@ public class Game {
 	}
 	
 	public ArrayList<Domino> tirageDomino(int nbrJoueur, ArrayList<Domino>listeDomino) {
-		ArrayList<ArrayList> resultat = new ArrayList<>();
-		ArrayList<Domino> listeDominoTirage = new ArrayList<>();
+		ArrayList<Domino> listeDominoTirage = new ArrayList<>(); //on crée deux listes pour retourner les dominos tirés
 		ArrayList<Domino> listeDominoTirageTrie = new ArrayList<>();
-		ArrayList<Integer> listeNbrAlea = new ArrayList<>();
-		ArrayList<ArrayList> listeResultat = new ArrayList<>();
 		if(nbrJoueur==3) {
 			for(int i=0;i<3;i++) {
 				int nbrAleatoire = random.nextInt(listeDomino.size());
-				listeDominoTirage.add(listeDomino.get(nbrAleatoire));
-				listeDomino.remove(listeDomino.get(nbrAleatoire));
+				listeDominoTirage.add(listeDomino.get(nbrAleatoire)); // suite à la création d'un nombre aléatoire, on ajoute à la liste de tirage
+				listeDomino.remove(listeDomino.get(nbrAleatoire)); // on enlève le domino
 			}
 			while(listeDominoTirage.size()!=0) {
 				int a=49;
 				int b=0;
 				for(int i=0;i<listeDominoTirage.size();i++) {
-					if(listeDominoTirage.get(i).getNumero()<a) {
+					if(listeDominoTirage.get(i).getNumero()<a) { // on cherche le domino le plus petit par son numéro
 						a=listeDominoTirage.get(i).getNumero();
 						b=i;
 					}
 				}
-				listeDominoTirageTrie.add(listeDominoTirage.get(b));
+				listeDominoTirageTrie.add(listeDominoTirage.get(b)); // on ajoute le domino le plus petit et on l'enlève de la liste de tirage
 				listeDominoTirage.remove(listeDominoTirage.get(b));
 			}
 			
 		}
-		else {
+		else { // on fait de même pour 4 et 2 joueurs
 			for(int i=0;i<4;i++) {
 				int nbrAleatoire = random.nextInt(listeDomino.size());
 				listeDominoTirage.add(listeDomino.get(nbrAleatoire));
@@ -137,41 +136,46 @@ public class Game {
 		return listeDominoTirageTrie;
 	}
 	public ArrayList<Domino> choixDomino(ArrayList<Domino> listeDominoTirageTrie,ArrayList<Joueur> listeJoueur) {
-		ArrayList<Domino> listeDominoTirageAnnexe=new ArrayList(listeDominoTirageTrie);
+		ArrayList<Domino> listeDominoTirageAnnexe=new ArrayList(listeDominoTirageTrie); // on fait des copies de liste car on aura besoin d'avoir la liste de base
 		ArrayList<Joueur> listeJoueurAnnexe=new ArrayList(listeJoueur);
 		ArrayList<Domino> listeDominoSortie=new ArrayList<>();
 		System.out.println(listeJoueurAnnexe);
 		while(listeJoueur.size()!=0) {
-			String[][] matrice=listeJoueur.get(0).getPlateauType();
-			System.out.println(listeJoueur.size());
 			System.out.println(listeJoueur.get(0).getName()+", quel domino choisissez-vous ?");
 			for(int i=0;i<listeDominoTirageTrie.size();i++) {
 				System.out.println(listeDominoTirageTrie.get(i).getNumero()+" "+listeDominoTirageTrie.get(i).getRoyaume1()+" "+listeDominoTirageTrie.get(i).getNbrCouronne1()+" "+listeDominoTirageTrie.get(i).getRoyaume2()+" "+listeDominoTirageTrie.get(i).getNbrCouronne2());
+				//on affiche tous les dominos
 			}
+			
 			Scanner scanner = new Scanner(System.in);
 			int choixDomino=0;
 			if(listeJoueur.get(0).isHuman()) {
-				choixDomino=scanner.nextInt();
+				choixDomino=scanner.nextInt(); //l'utilisateur rentre une valeur pour le domino s'il n'est pas IA
 			}
 			else {
 				ArrayList<Domino> listeDominoTirageTrieAnnexe = new ArrayList(listeDominoTirageTrie);
 				ArrayList<Integer> listeCompteur=ia(matrice);
-				ArrayList<String> listeType = new ArrayList<>(Arrays.asList("Montagne","Mine","Mer","Plaine","Champs","Foret"));
+				ArrayList<String> listeType = new ArrayList<>(Arrays.asList("Montagne","Mine","Mer","Plaine","Champs","Foret")); // on instaure cette liste pour déterminer le nombre de cases de chaque type
 				while(listeCompteur.size()!=0){
-					int rang3=listeCompteur.indexOf(Collections.max(listeCompteur));
+					int rang3=listeCompteur.indexOf(Collections.max(listeCompteur)); // on récupère la valeur du type la plus grande
 					String type=listeType.get(rang3);
 					for(int i=0;i<listeDominoTirageTrieAnnexe.size();i++){
 						String type1=listeDominoTirageTrieAnnexe.get(i).getRoyaume1();
 						String type2=listeDominoTirageTrieAnnexe.get(i).getRoyaume2();
 						if(type.equals(type1) || type.equals(type2)){
-							choixDomino=listeDominoTirageTrieAnnexe.get(i).getNumero();
+							choixDomino=listeDominoTirageTrieAnnexe.get(i).getNumero(); // on prends le domino qui contient le type le plus présent dans la matrice
 							break;
 						}
 					}
-					listeCompteur.remove(listeCompteur.get(rang3));
+					if(choixDomino==0) { // si on ne trouve pas de domino qui correspond, on réitère l'opération
+						listeCompteur.remove(listeCompteur.get(rang3));
+					}
+					else {
+						break;
+					}
 				}
 				if(choixDomino==0) {
-					choixDomino=listeDominoTirageTrie.get(0).getNumero();
+					choixDomino=listeDominoTirageTrie.get(0).getNumero(); // si rien, on prends le premier domino
 				}
 			}
 			
@@ -180,7 +184,7 @@ public class Game {
 			for(int i=0;i<listeDominoTirageTrie.size();i++) {
 				if(choixDomino==listeDominoTirageTrie.get(i).getNumero()) {
 					rang=i;
-					System.out.println(rang);
+					System.out.println(rang); //on cherche le rang pour le domino choisit que ce soit pour la vraie liste et la liste annexe
 				}
 			}
 			int rang2=0;
@@ -190,8 +194,8 @@ public class Game {
 					System.out.println(rang2);
 				}
 			}
-			listeDominoSortie.add(listeDominoTirageTrie.get(rang));
-			listeJoueurAnnexe.set(rang2,listeJoueur.get(0));
+			listeDominoSortie.add(listeDominoTirageTrie.get(rang)); // on ajoute à la liste de sortie le domino choisit ( les dominos vont sortir dans le même ordre que les joueurs ont choisit
+			listeJoueurAnnexe.set(rang2,listeJoueur.get(0)); // on modifie cette liste pour avoir l'ordre du prochain tour
 			listeDominoTirageTrie.remove(listeDominoTirageTrie.get(rang));
 			listeJoueur.remove(listeJoueur.get(0));
 			System.out.println(listeDominoTirageTrie);
@@ -199,7 +203,7 @@ public class Game {
 			System.out.println(listeDominoSortie);
 			
 		}
-		listeJoueur.addAll(listeJoueurAnnexe);
+		listeJoueur.addAll(listeJoueurAnnexe); // on retransfère le nouvel ordre de joueur dans la listeJoueur
 		return listeDominoSortie;
 	}
 	public void tourPlacageDomino(ArrayList<Joueur> listeJoueurPlacement,ArrayList<Domino> listeDominoSortie) {
@@ -223,6 +227,7 @@ public class Game {
 		int compteurChamps=0;
 		int compteurPlaine=0;
 		int compteurForet=0;
+		//on initialise différents compteurs pour pouvoir ensuite savoir quelle domino choisir
 		for(int i=0;i<11;i++) {
 			for(int k=0;k<11;k++) {
 				if(plateauType[i][k]=="Mer") {
@@ -251,7 +256,7 @@ public class Game {
 		listeCompteur.add(compteurPlaine);
 		listeCompteur.add(compteurChamps);
 		listeCompteur.add(compteurForet);
-		return listeCompteur;
+		return listeCompteur; // on retourne tous les compteurs
 	}
 	
 	public void vainqueur(ArrayList<Joueur> listeJoueur, ArrayList<Boolean> listeModeOptionnel) {
@@ -266,10 +271,10 @@ public class Game {
 		ArrayList<Joueur> listeVainqueur = new ArrayList<>();
 		for(int i=0;i<listeResultat.size();i++) {
 			if(listeResultat.get(i)==max) {
-				listeVainqueur.add(listeJoueur.get(i));
+				listeVainqueur.add(listeJoueur.get(i)); // si des joueurs sont à égalité on les laisse tous les deux dans la liste vainqueur
 			}
 			else if(listeResultat.get(i)>max) {
-				listeVainqueur.clear();
+				listeVainqueur.clear(); // si un joueur est seul en tête, on efface la liste et on l'ajoute
 				listeVainqueur.add(listeJoueur.get(i));
 			}
 		}
@@ -280,7 +285,7 @@ public class Game {
 				for(int i=0;i<11;i++) {
 					for(int k=0;k<11;k++) {
 						if(listeVainqueur.get(j).getPlateauType()[i][k]!=null) {
-							compteur++;
+							compteur++; // on compte les cases remplies pour tous les joueurs à égalité
 						}
 					}
 				}
@@ -292,7 +297,7 @@ public class Game {
 			System.out.println(listeVainqueur.get(0).getName());
 			return;
 		}
-		for(int i=0;i<listeResultat.size();i++) {
+		for(int i=0;i<listeResultat.size();i++) { // on réitère le même système que précédemment
 			if(listeResultat.get(i)==max) {
 				listeVainqueur.add(listeJoueur.get(i));
 			}
@@ -307,7 +312,7 @@ public class Game {
 				int compteurCour=0;
 				for(int i=0;i<11;i++) {
 					for(int k=0;k<11;k++) {
-						compteurCour=compteurCour+listeVainqueur.get(j).getPlateauCouronne()[i][k];
+						compteurCour=compteurCour+listeVainqueur.get(j).getPlateauCouronne()[i][k]; // on ajoute les couronnes
 					}
 				}
 				listeResultat.add(compteurCour);
