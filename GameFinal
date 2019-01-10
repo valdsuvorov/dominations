@@ -275,7 +275,7 @@ public class Game {
 			}
 			else {
 				ArrayList<Domino> listeDominoTirageTrieAnnexe = new ArrayList(listeDominoTirageTrie);
-				ArrayList<Integer> listeCompteur=ia(matrice);
+				ArrayList<Integer> listeCompteur=ia(listeJoueur.get(0).getPlateauType());
 				ArrayList<String> listeType = new ArrayList<>(Arrays.asList("Montagne","Mine","Mer","Plaine","Champs","Foret")); // on instaure cette liste pour déterminer le nombre de cases de chaque type
 				while(listeCompteur.size()!=0){
 					int rang3=listeCompteur.indexOf(Collections.max(listeCompteur)); // on récupère la valeur du type la plus grande
@@ -327,13 +327,13 @@ public class Game {
 		listeJoueur.addAll(listeJoueurAnnexe); // on retransfère le nouvel ordre de joueur dans la listeJoueur
 		return listeDominoSortie;
 	}
-	public void tourPlacageDomino(ArrayList<Joueur> listeJoueurPlacement,ArrayList<Domino> listeDominoSortie) {
+	public void tourPlacageDomino(ArrayList<Joueur> listeJoueurPlacement,ArrayList<Domino> listeDominoSortie,ArrayList<Boolean> listeModeOptionnel) {
 		while(listeJoueurPlacement.size()!=0) {
 			if(listeJoueurPlacement.get(0).isHuman()) {
 				listeJoueurPlacement.get(0).placement(listeJoueurPlacement.get(0).getPlateauType(),listeDominoSortie,listeJoueurPlacement.get(0).getPlateauCouronne());
 			}
 			else {
-				listeJoueurPlacement.get(0).placementIA(listeJoueurPlacement.get(0).getPlateauType(),listeDominoSortie,listeJoueurPlacement.get(0).getPlateauCouronne());
+				listeJoueurPlacement.get(0).placementIA(listeJoueurPlacement.get(0).getPlateauType(),listeDominoSortie,listeJoueurPlacement.get(0).getPlateauCouronne(),listeModeOptionnel);
 			}
 			listeJoueurPlacement.remove(listeJoueurPlacement.get(0));
 			listeDominoSortie.remove(listeDominoSortie.get(0));
@@ -383,7 +383,7 @@ public class Game {
 	public void vainqueur(ArrayList<Joueur> listeJoueur, ArrayList<Boolean> listeModeOptionnel) {
 		ArrayList<Integer> listeResultat = new ArrayList<>();
 		for(int i=0;i<listeJoueur.size();i++) {
-			int total=listeJoueur.get(i).comptagePoints(listeJoueur.get(i).getPlateauType(), listeJoueur.get(i).getPlateauCouronne(),listeModeOtpionnel); // On compte les points pour chaque joueur
+			int total=listeJoueur.get(i).comptagePoints(listeJoueur.get(i).getPlateauType(), listeJoueur.get(i).getPlateauCouronne(),listeModeOptionnel); // On compte les points pour chaque joueur
 			System.out.println(listeJoueur.get(i).getName());
 			System.out.println(total);
 			listeResultat.add(total); //on ajoute chaque points pour chaque joueur qui seront classé suivant la liste joueur
