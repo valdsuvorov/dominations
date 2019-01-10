@@ -253,4 +253,82 @@ public class Game {
 		listeCompteur.add(compteurForet);
 		return listeCompteur;
 	}
+	
+	public void vainqueur(ArrayList<Joueur> listeJoueur) {
+		ArrayList<Integer> listeResultat = new ArrayList<>();
+		for(int i=0;i<listeJoueur.size();i++) {
+			int total=listeJoueur.get(i).comptagePoints(listeJoueur.get(i).getPlateauType(), listeJoueur.get(i).getPlateauCouronne()); // On compte les points pour chaque joueur
+			System.out.println(listeJoueur.get(i).getName());
+			System.out.println(total);
+			listeResultat.add(total); //on ajoute chaque points pour chaque joueur qui seront classé suivant la liste joueur
+		}
+		int max=0;
+		ArrayList<Joueur> listeVainqueur = new ArrayList<>();
+		for(int i=0;i<listeResultat.size();i++) {
+			if(listeResultat.get(i)==max) {
+				listeVainqueur.add(listeJoueur.get(i));
+			}
+			else if(listeResultat.get(i)>max) {
+				listeVainqueur.clear();
+				listeVainqueur.add(listeJoueur.get(i));
+			}
+		}
+		listeResultat.clear();
+		if(listeVainqueur.size()!=1) {
+			for(int j=0;j<listeVainqueur.size();j++) {
+				int compteur=0;
+				for(int i=0;i<11;i++) {
+					for(int k=0;k<11;k++) {
+						if(listeVainqueur.get(j).getPlateauType()[i][k]!=null) {
+							compteur++;
+						}
+					}
+				}
+				listeResultat.add(compteur);
+			}
+			
+		}
+		else {
+			System.out.println(listeVainqueur.get(0).getName());
+			return;
+		}
+		for(int i=0;i<listeResultat.size();i++) {
+			if(listeResultat.get(i)==max) {
+				listeVainqueur.add(listeJoueur.get(i));
+			}
+			else if(listeResultat.get(i)>max) {
+				listeVainqueur.clear();
+				listeVainqueur.add(listeJoueur.get(i));
+			}
+		}
+		listeResultat.clear();
+		if(listeVainqueur.size()!=1) {
+			for(int j=0;j<listeVainqueur.size();j++) {
+				int compteurCour=0;
+				for(int i=0;i<11;i++) {
+					for(int k=0;k<11;k++) {
+						compteurCour=compteurCour+listeVainqueur.get(j).getPlateauCouronne()[i][k];
+					}
+				}
+				listeResultat.add(compteurCour);
+			}
+		}
+		else {
+			System.out.println(listeVainqueur.get(0).getName());
+			return;
+		}
+		for(int i=0;i<listeResultat.size();i++) {
+			if(listeResultat.get(i)==max) {
+				listeVainqueur.add(listeJoueur.get(i));
+			}
+			else if(listeResultat.get(i)>max) {
+				listeVainqueur.clear();
+				listeVainqueur.add(listeJoueur.get(i));
+			}
+		}
+		for(int i =0;i<listeVainqueur.size();i++) {
+			System.out.println(listeVainqueur.get(i).getName());
+			return;
+		}
+	}
 }
