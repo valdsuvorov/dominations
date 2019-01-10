@@ -254,10 +254,10 @@ public class Game {
 		return listeCompteur;
 	}
 	
-	public void vainqueur(ArrayList<Joueur> listeJoueur) {
+	public void vainqueur(ArrayList<Joueur> listeJoueur, ArrayList<Boolean> listeModeOptionnel) {
 		ArrayList<Integer> listeResultat = new ArrayList<>();
 		for(int i=0;i<listeJoueur.size();i++) {
-			int total=listeJoueur.get(i).comptagePoints(listeJoueur.get(i).getPlateauType(), listeJoueur.get(i).getPlateauCouronne()); // On compte les points pour chaque joueur
+			int total=listeJoueur.get(i).comptagePoints(listeJoueur.get(i).getPlateauType(), listeJoueur.get(i).getPlateauCouronne(),listeModeOtpionnel); // On compte les points pour chaque joueur
 			System.out.println(listeJoueur.get(i).getName());
 			System.out.println(total);
 			listeResultat.add(total); //on ajoute chaque points pour chaque joueur qui seront classé suivant la liste joueur
