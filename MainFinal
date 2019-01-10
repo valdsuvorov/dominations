@@ -49,6 +49,7 @@ public class Main {
 				listeJoueur.add(joueur); //on ajoute une deuxième fois le joueur pour avoir l'équivalent de 4 rois
 			}
 		}
+		scanner.nextLine();
 		for(int k=1;k<=nbrJoueur-nbrIA;k++) { // on fait de meme que pour l'IA
 			String[][]plateauType=new String[11][11];
 			int[][] plateauCouronne=new int[11][11];
