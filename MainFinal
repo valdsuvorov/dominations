@@ -22,7 +22,17 @@ public class Main {
 		Game game=new Game(nbrJoueur,listeDomino); //Création d'un jeu
 		scanner.nextLine();
 		ArrayList<Joueur> listeJoueur=new ArrayList<>();
-		
+		ArrayList<Boolean> listeModeOptionnel = new ArrayList<>();
+		System.out.println("Voulez-vous jouer en mode empire du milieu ?(true or false)");
+		boolean empire = scanner.nextBoolean();
+		if(empire) {
+			listeModeOptionnel.add(empire);
+		}
+		System.out.println("Voulez-vous jouer en mode harmonie ?(true or false)");
+		boolean harmonie = scanner.nextBoolean();
+		if(harmonie) {
+			listeModeOptionnel.add(harmonie);
+		}
 		for(int i=1;i<=nbrIA;i++) { // Création des IA
 			String[][]plateauType=new String[11][11]; //La création des deux matrices dans le for est essentiel pour éviter que cahque joueur ait le meme plateau
 			int[][] plateauCouronne=new int[11][11]; //Nous avons décidé de faire deux plateaux pour une plus simple manipulation
@@ -62,9 +72,9 @@ public class Main {
 			listeJoueurPlacement.get(0).afficherPlateau(listeJoueurPlacement.get(0).getPlateauType(),listeJoueurPlacement.get(0).getPlateauCouronne());
 			listeJoueurPlacement.get(0).afficherMatriceDomino(listeJoueurPlacement.get(0).getPlateauType(),listeJoueurPlacement.get(0).getPlateauCouronne());
 			listeJoueurPlacement.get(1).afficherMatriceDomino(listeJoueurPlacement.get(1).getPlateauType(),listeJoueurPlacement.get(1).getPlateauCouronne());
-			game.tourPlacageDomino(listeJoueurPlacement,listeDominoSortie); // On fait le tour de placement du domino
+			game.tourPlacageDomino(listeJoueurPlacement,listeDominoSortie,listeModeOptionnel); // On fait le tour de placement du domino
 		}
-		game.vainqueur(listeJoueur);
+		game.vainqueur(listeJoueur,listeModeOptionnel);
 	}
 
 }
