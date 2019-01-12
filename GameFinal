@@ -397,6 +397,7 @@ public class Game {
 			else if(listeResultat.get(i)>max) {
 				listeVainqueur.clear(); // si un joueur est seul en tête, on efface la liste et on l'ajoute
 				listeVainqueur.add(listeJoueur.get(i));
+				max=listeResultat.get(i);
 			}
 		}
 		listeResultat.clear();
@@ -415,7 +416,7 @@ public class Game {
 			
 		}
 		else {
-			System.out.println(listeVainqueur.get(0).getName());
+			System.out.println("Le vainqueur par points est" +listeVainqueur.get(0).getName());
 			return;
 		}
 		for(int i=0;i<listeResultat.size();i++) { // on réitère le même système que précédemment
@@ -440,7 +441,7 @@ public class Game {
 			}
 		}
 		else {
-			System.out.println(listeVainqueur.get(0).getName());
+			System.out.println("Le vainqueur par taille de royaume est "+listeVainqueur.get(0).getName());
 			return;
 		}
 		for(int i=0;i<listeResultat.size();i++) {
@@ -453,7 +454,12 @@ public class Game {
 			}
 		}
 		for(int i =0;i<listeVainqueur.size();i++) {
-			System.out.println(listeVainqueur.get(i).getName());
+			if(listeVainqueur.size()==1){
+				System.out.println("Le vainqueur par nombre de couronnes est "+listeVainqueur.get(0).getName());
+			}
+			else{
+				System.out.println(listeVainqueur.get(i).getName());
+			}
 			return;
 		}
 	}
